@@ -18,7 +18,7 @@ namespace Domain.Models
         public long? CustomerId { get; set; }
         public string Iban { get; set; }
 
-        public virtual Customer Customer { get; set; }
-        public virtual Customer Marketer { get; set; }
+        public  Customer Customer { get; set; }
+        public  Customer Marketer { get; set; }
     }
 }

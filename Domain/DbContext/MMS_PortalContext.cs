@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using System;
+using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 #nullable disable
@@ -9,7 +10,9 @@ namespace Domain.DbContext
     {
         public MMS_PortalContext()
         {
+            
         }
+        
 
         public MMS_PortalContext(DbContextOptions<MMS_PortalContext> options)
             : base(options)
@@ -64,6 +67,8 @@ namespace Domain.DbContext
             {
                 optionsBuilder.UseSqlServer("Server=.;Database=MMS_Portal;uid=sa;pwd=123456;");
             }
+
+            optionsBuilder.LogTo(Console.WriteLine);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

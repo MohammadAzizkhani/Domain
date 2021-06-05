@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-#nullable disable
-
-namespace Domain.Models
+namespace Api.Viewmodel
 {
-    public partial class Person
+    public class AddPersonViewModel
     {
-        public Person()
-        {
-            Customers = new HashSet<Customer>();
-        }
-
-        public long Id { get; set; }
         public bool? IsDisable { get; set; }
         public string NationalNumber { get; set; }
         public string FirstNameFa { get; set; }
@@ -54,9 +48,5 @@ namespace Domain.Models
         public string PassportExpireDate { get; set; }
         public string CommercialCode { get; set; }
 
-        public  Alphabitic BirthCertificateAlphabiticNo { get; set; }
-        public  Degree Degree { get; set; }
-        public  Nationality Nationality { get; set; }
-        public  ICollection<Customer> Customers { get; set; }
     }
 }

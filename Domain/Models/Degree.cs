@@ -15,6 +15,6 @@ namespace Domain.Models
         public int Id { get; set; }
         public string DegreeName { get; set; }
 
-        public virtual ICollection<Person> People { get; set; }
+        public  ICollection<Person> People { get; set; }
     }
 }

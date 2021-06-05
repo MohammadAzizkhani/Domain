@@ -23,7 +23,7 @@ namespace Domain.Models
         public string IntroducedSharedType { get; set; }
         public long? IntroducedSharedAmount { get; set; }
 
-        public virtual Customer Customer { get; set; }
-        public virtual Project Project { get; set; }
+        public  Customer Customer { get; set; }
+        public  Project Project { get; set; }
     }
 }

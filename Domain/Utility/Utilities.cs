@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Models;
 
 namespace Domain.Utility
 {
@@ -27,5 +28,6 @@ namespace Domain.Utility
                 return null;
             return type.GetField(name).GetCustomAttributes(false).OfType<TAttribute>().SingleOrDefault();
         }
+
     }
 }

@@ -1,22 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-#nullable disable
-
-namespace Domain.Models
+namespace Api.Viewmodel
 {
-    public partial class Customer
+    public class AddCustomerViewModel
     {
-        public Customer()
-        {
-            Contracts = new HashSet<Contract>();
-            CustomersIbans = new HashSet<CustomersIban>();
-            MarketerContractCustomers = new HashSet<MarketerContract>();
-            MarketerContractMarketers = new HashSet<MarketerContract>();
-            Merchants = new HashSet<Merchant>();
-            Requests = new HashSet<Request>();
-        }
-
         public long Id { get; set; }
         public long? PersonId { get; set; }
         public string MobileNumber { get; set; }
@@ -25,8 +15,8 @@ namespace Domain.Models
         public string AddressEn { get; set; }
         public string Email { get; set; }
         public string WebSiteAddress { get; set; }
-        public bool? IsSharedAccount { get; set; }
-        public bool? IsMultiAccount { get; set; }
+        public bool IsSharedAccount { get; set; }
+        public bool IsMultiAccount { get; set; }
         public string ShopPostalCode { get; set; }
         public string ShopFaxNumber { get; set; }
         public string ShopTelephoneNumber { get; set; }
@@ -36,7 +26,6 @@ namespace Domain.Models
         public string ShopBusinessLicenseExpireDate { get; set; }
         public string ShopEmail { get; set; }
         public string ShopAddress { get; set; }
-        public string BusinesslicenseImg { get; set; }
         public string RedirectUrl { get; set; }
         public int GuildId { get; set; }
         public string ShopLogo { get; set; }
@@ -46,16 +35,7 @@ namespace Domain.Models
         public string ShopNameEn { get; set; }
         public string ProvinceAbbreviation { get; set; }
         public string CountryAbbreviation { get; set; }
-        public int? CityCode { get; set; }
+        public int CityCode { get; set; }
         public string TaxPayerCode { get; set; }
-
-        public  GuildCategory Guild { get; set; }
-        public  Person Person { get; set; }
-        public  ICollection<Contract> Contracts { get; set; }
-        public  ICollection<CustomersIban> CustomersIbans { get; set; }
-        public  ICollection<MarketerContract> MarketerContractCustomers { get; set; }
-        public  ICollection<MarketerContract> MarketerContractMarketers { get; set; }
-        public  ICollection<Merchant> Merchants { get; set; }
-        public  ICollection<Request> Requests { get; set; }
     }
 }

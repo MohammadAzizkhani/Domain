@@ -2,7 +2,9 @@ using System;
 using System.Security.Claims;
 using System.Text;
 using Api.Extenssions;
+using Api.MappingProfile;
 using Api.Service;
+using AutoMapper;
 using Domain.DbContext;
 using Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -16,6 +18,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Service.Implementation;
+using Service.Interface;
 
 namespace Api
 {
@@ -115,8 +119,23 @@ namespace Api
             });
 
 
+            services.AddSingleton(option =>
+            {
+                var config = new MapperConfiguration(cfg =>
+                {
+                    cfg.AddProfile<CustomerProfile>();
+                    cfg.AddProfile<PersonProfile>();
+                });
+                return config.CreateMapper();
+            });
+
+
             services.AddScoped<JwtService>();
             services.AddScoped<MMS_PortalContext>();
+
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<ISharedDataService, SharedDataService>();
+            services.AddScoped<IIbanService, IbanService>();
 
             services.AddControllers();
         }

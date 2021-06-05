@@ -15,8 +15,8 @@ namespace Domain.Models
         public byte? Status { get; set; }
         public int? TerminalType { get; set; }
 
-        public virtual Customer Customer { get; set; }
-        public virtual Psp Psp { get; set; }
-        public virtual TerminalType TerminalTypeNavigation { get; set; }
+        public  Customer Customer { get; set; }
+        public  Psp Psp { get; set; }
+        public  TerminalType TerminalTypeNavigation { get; set; }
     }
 }

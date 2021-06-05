@@ -14,6 +14,6 @@ namespace Domain.Models
         public DateTime? Createdate { get; set; }
         public bool? Isactive { get; set; }
 
-        public virtual GuildCategory Category { get; set; }
+        public  GuildCategory Category { get; set; }
     }
 }

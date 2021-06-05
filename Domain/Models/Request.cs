@@ -29,12 +29,12 @@ namespace Domain.Models
         public DateTime? InsertDateTime { get; set; }
         public string RequestData { get; set; }
 
-        public virtual Customer Customer { get; set; }
-        public virtual Psp Psp { get; set; }
-        public virtual RequestState RequestState { get; set; }
-        public virtual RequestType RequestType { get; set; }
-        public virtual ICollection<NewGuildAndPostalCodeRequest> NewGuildAndPostalCodeRequests { get; set; }
-        public virtual ICollection<NewIbanRequest> NewIbanRequests { get; set; }
-        public virtual ICollection<RequestHistory> RequestHistories { get; set; }
+        public  Customer Customer { get; set; }
+        public  Psp Psp { get; set; }
+        public  RequestState RequestState { get; set; }
+        public  RequestType RequestType { get; set; }
+        public  ICollection<NewGuildAndPostalCodeRequest> NewGuildAndPostalCodeRequests { get; set; }
+        public  ICollection<NewIbanRequest> NewIbanRequests { get; set; }
+        public  ICollection<RequestHistory> RequestHistories { get; set; }
     }
 }

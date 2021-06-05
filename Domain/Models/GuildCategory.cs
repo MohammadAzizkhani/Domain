@@ -19,7 +19,7 @@ namespace Domain.Models
         public DateTime? Createdate { get; set; }
         public bool? Isactive { get; set; }
 
-        public virtual ICollection<Customer> Customers { get; set; }
-        public virtual ICollection<GuildSubCategory> GuildSubCategories { get; set; }
+        public  ICollection<Customer> Customers { get; set; }
+        public  ICollection<GuildSubCategory> GuildSubCategories { get; set; }
     }
 }

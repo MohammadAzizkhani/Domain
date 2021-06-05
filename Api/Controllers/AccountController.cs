@@ -1,14 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Api.Service;
 using Api.Viewmodel;
 using Domain;
-using Domain.DbContext;
 using Domain.Models;
 using Domain.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -26,14 +23,12 @@ namespace Api.Controllers
         private readonly UserManager<CustomIdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly JwtService _jwtService;
-        private readonly MMS_PortalContext _context;
 
         public AccountController(UserManager<CustomIdentityUser> userManager,
-            JwtService jwtService, MMS_PortalContext context, RoleManager<IdentityRole> roleManager)
+            JwtService jwtService, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _jwtService = jwtService;
-            _context = context;
             _roleManager = roleManager;
         }
 
@@ -136,7 +131,10 @@ namespace Api.Controllers
             var user = await _userManager.FindByNameAsync(request.Username);
 
             if (user == null)
-                return BadRequest();
+                throw new MMSPortalException(ChangePasswordException.Failed.GetEnumDescription())
+                {
+                    Code = (int)HttpStatusCode.NotFound,
+                };
 
             var result = await _userManager.SetLockoutEndDateAsync(user, DateTime.MaxValue);
 

@@ -21,4 +21,10 @@ namespace Domain
         [Description("تغییر رمز کاربر با مشکل رو برو شد.")]
         Failed = 0
     }
+
+    public enum CreatePersonException
+    {
+        [Description("شخصی با این کد ملی وجود دارد.")]
+        AlreadyExist = 0
+    }
 }
