@@ -26,11 +26,31 @@ namespace Service.Implementation
 
         public async Task<Person> AddPerson(Person model)
         {
-            var person = _context.People.FirstOrDefault(x => x.NationalNumber == model.NationalNumber && x.BirthDate == model.BirthDate);
+            Person person = null;
+            if (model.IsForeign.HasValue)
+            {
+                if (!model.IsForeign.Value)
+                {
+                    if (model.IsLegal.HasValue && model.IsLegal.Value)
+                    {
+                        person = _context.People.FirstOrDefault(x => x.RegisterNo == model.RegisterNo);
+                    }
+                    else
+                    {
+                        person = _context.People.FirstOrDefault(x => x.NationalNumber == model.NationalNumber);
+                    }
+                }
+                else
+                {
+                    person = _context.People.FirstOrDefault(x => x.ForeignPervasiveCode == model.ForeignPervasiveCode);
+                }
+            }
+
             if (person != null)
             {
                 return person;
             }
+
             await _context.People.AddAsync(model);
 
             await _context.SaveChangesAsync();
@@ -38,9 +58,9 @@ namespace Service.Implementation
             return model;
         }
 
-       
 
-        public async Task<List<Customer>> GetCustomers(CustomerFilter filter)
+
+        public async Task<PageCollection<Customer>> GetCustomers(CustomerFilter filter)
         {
             var query = _context.Customers.AsQueryable();
 
@@ -60,30 +80,39 @@ namespace Service.Implementation
             {
                 query = query.Where(x => x.ShopNameEn == filter.ShopName || x.ShopNameFa == filter.ShopName);
             }
+            var count = await query.CountAsync();
+
             query = query.ApplyPaging(filter);
 
-            return await query.ToListAsync();
+            var data = await query.ToListAsync();
+
+
+
+            return new PageCollection<Customer>
+            {
+                Data = data,
+                Pages = count / filter.PageSize,
+                TotalRecord = count
+            };
+
         }
 
-        
+
 
         public async Task<Customer> AddCustomer(Customer model)
         {
-            await _context.Customers.AddAsync(model);
-
             var pspList = await _context.Psps.ToListAsync();
 
-            var requests = pspList.Select(x => new Request
+            model.Requests = pspList.Select(x => new Request
             {
                 CustomerId = model.Id,
                 InsertDateTime = DateTime.Now,
                 RequestTypeId = (byte)RequestTypeEnum.MerchantRegister,
-                RequestData = JsonConvert.SerializeObject(model),
                 TrackingNumber = Guid.NewGuid(),
                 PspId = x.Id
-            });
+            }).ToList();
 
-            await _context.Requests.AddRangeAsync(requests);
+            await _context.Customers.AddAsync(model);
 
             await _context.SaveChangesAsync();
 

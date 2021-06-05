@@ -56,5 +56,21 @@ namespace Api.Controllers
 
             return Ok(data);
         }
+
+        [HttpGet("alphabets")]
+        public async Task<IActionResult> GetAlphabets()
+        {
+            var data = await _sharedDataService.GetAlphabetic();
+
+            return Ok(data);
+        }
+
+        [HttpGet("degrees")]
+        public async Task<IActionResult> GetDegrees()
+        {
+            var data = await _sharedDataService.GetDegrees();
+
+            return Ok(data);
+        }
     }
 }

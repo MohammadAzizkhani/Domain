@@ -7,8 +7,7 @@ namespace Api.Viewmodel
 {
     public class AddCustomerViewModel
     {
-        public long Id { get; set; }
-        public long? PersonId { get; set; }
+        public long PersonId { get; set; }
         public string MobileNumber { get; set; }
         public string Telephone { get; set; }
         public string AddressFa { get; set; }
@@ -29,8 +28,6 @@ namespace Api.Viewmodel
         public string RedirectUrl { get; set; }
         public int GuildId { get; set; }
         public string ShopLogo { get; set; }
-        public string CustomerKey { get; set; }
-        public string CustomerValue { get; set; }
         public string ShopNameFa { get; set; }
         public string ShopNameEn { get; set; }
         public string ProvinceAbbreviation { get; set; }

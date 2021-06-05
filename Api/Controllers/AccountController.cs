@@ -36,6 +36,13 @@ namespace Api.Controllers
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             var user = await _userManager.FindByNameAsync(loginDto.Username);
+            if (user == null)
+            {
+                throw new MMSPortalException(LoginException.UserNotFound.GetEnumDescription())
+                {
+                    Code = (int)HttpStatusCode.NotFound,
+                };
+            }
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             var isLocked = await _userManager.IsLockedOutAsync(user);
             if (isLocked)

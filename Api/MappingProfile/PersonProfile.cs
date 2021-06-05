@@ -12,7 +12,9 @@ namespace Api.MappingProfile
     {
         public PersonProfile()
         {
-            CreateMap<AddPersonViewModel, Person>();
+            CreateMap<AddPersonViewModel, Person>()
+                .ForMember(p => p.InsertDateTime,
+                    x => x.MapFrom(x => DateTime.Now));
         }
     }
 }

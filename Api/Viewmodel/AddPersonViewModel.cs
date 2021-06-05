@@ -27,14 +27,7 @@ namespace Api.Viewmodel
         public int? DegreeId { get; set; }
         public string PostalCode { get; set; }
         public bool? IsLegal { get; set; }
-        public bool? IsForeign { get; set; }
-        public string NationalCardImgFront { get; set; }
-        public string NationalCardImgBack { get; set; }
-        public string BirthCertificateImg { get; set; }
-        public string CompanyStatuteImg { get; set; }
-        public string WorkPermitImg { get; set; }
-        public string AnnounceLatestChangesImg { get; set; }
-        public DateTime? InsertDateTime { get; set; }
+        public bool IsForeign { get; set; }
         public string RegisterDate { get; set; }
         public string RegisterNo { get; set; }
         public string ComNameEn { get; set; }

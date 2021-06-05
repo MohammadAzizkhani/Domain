@@ -63,10 +63,6 @@ namespace Domain.DbContext
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=.;Database=MMS_Portal;uid=sa;pwd=123456;");
-            }
 
             optionsBuilder.LogTo(Console.WriteLine);
         }

@@ -38,6 +38,9 @@ namespace Api
 
 
             services.AddDbContext<ApplicationIdentityContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<MMS_PortalContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddIdentity<CustomIdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationIdentityContext>();
 
@@ -131,12 +134,12 @@ namespace Api
 
 
             services.AddScoped<JwtService>();
-            services.AddScoped<MMS_PortalContext>();
 
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ISharedDataService, SharedDataService>();
             services.AddScoped<IIbanService, IbanService>();
 
+            services.AddCors();
             services.AddControllers();
         }
 
@@ -151,6 +154,14 @@ namespace Api
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseRouting();
+
+            app.UseCors(builder =>
+            {
+                builder.WithOrigins(Configuration["AllowedOrigins"].Split(","))
+                    .AllowAnyHeader()
+                    .WithMethods("GET", "POST", "DELETE", "PUT", "OPTIONS");
+                //.AllowCredentials();
+            });
 
             app.UseAuthentication();
             app.UseAuthorization();

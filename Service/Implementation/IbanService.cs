@@ -35,6 +35,8 @@ namespace Service.Implementation
                 PspId = x.Id
             });
 
+            await _context.Requests.AddRangeAsync(requests);
+
             await _context.SaveChangesAsync();
         }
 

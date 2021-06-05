@@ -4,7 +4,7 @@ namespace Domain
 {
     public enum LoginException
     {
-        [Description("عملیات لاگین موفقیت آمیز نبود.")]
+        [Description("نام کاربری یا رمز عبور صحیح نمی باشد.")]
         UserNotFound = 0,
         [Description("کاربر غیر فعال می باشد .")]
         UserIsInactive = 1
