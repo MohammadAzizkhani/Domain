@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Service.Interface;
 
@@ -20,7 +21,7 @@ namespace Api.Controllers
         [HttpGet("cities")]
         public async Task<IActionResult> GetCities(int provinceId)
         {
-            var data  = await _sharedDataService.GetCities(provinceId);
+            var data = await _sharedDataService.GetCities(provinceId);
 
             return Ok(data);
         }
@@ -49,6 +50,14 @@ namespace Api.Controllers
             return Ok(data);
         }
 
+        [HttpGet("search-nationalities")]
+        public async Task<IActionResult> GetNationalities([FromQuery] string search)
+        {
+            var data = await _sharedDataService.GetNationalities(search);
+
+            return Ok(data);
+        }
+
         [HttpGet("nationalities")]
         public async Task<IActionResult> GetNationalities()
         {
@@ -69,6 +78,25 @@ namespace Api.Controllers
         public async Task<IActionResult> GetDegrees()
         {
             var data = await _sharedDataService.GetDegrees();
+
+            return Ok(data);
+        }
+
+        [HttpGet("person-type")]
+        public IActionResult GetPersonType()
+        {
+            return Ok(new List<object>
+            {
+                new {Id = 1, Name = "حقیقی"},
+                new {Id = 2, Name = "حقوقی"},
+                new {Id = 3, Name = "اتباع"}
+            });
+        }
+
+        [HttpGet("countries")]
+        public async Task<IActionResult> GetCountries()
+        {
+            var data = await _sharedDataService.GetCountries();
 
             return Ok(data);
         }

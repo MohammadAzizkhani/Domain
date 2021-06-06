@@ -10,6 +10,6 @@ namespace Service.Interface
         Task<Customer> AddCustomer(Customer model);
         Task<Person> AddPerson(Person model);
         Task<PageCollection<Customer>> GetCustomers(CustomerFilter filter);
-        
+        Task EditGuild(long customerId, int guildId);
     }
 }

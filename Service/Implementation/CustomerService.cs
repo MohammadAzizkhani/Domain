@@ -62,7 +62,7 @@ namespace Service.Implementation
 
         public async Task<PageCollection<Customer>> GetCustomers(CustomerFilter filter)
         {
-            var query = _context.Customers.AsQueryable();
+            var query = _context.Customers.Include(x=>x.Guild).AsQueryable();
 
             //var columnsMap = new Dictionary<string, Expression<Func<Customer, object>>>
             //{
@@ -97,6 +97,28 @@ namespace Service.Implementation
 
         }
 
+        public async Task EditGuild(long customerId, int guildId)
+        {
+            var pspList = await _context.Psps.ToListAsync();
+
+            var requests = pspList.Select(x => new Request
+            {
+                CustomerId = customerId,
+                InsertDateTime = DateTime.Now,
+                RequestTypeId = (byte)RequestTypeEnum.MerchantRegister,
+                TrackingNumber = Guid.NewGuid(),
+                PspId = x.Id,
+            }).ToList();
+
+            //_context.Requests.AddAsync(new Request
+            //{
+            //    CustomerId = customerId,
+            //    InsertDateTime = DateTime.Now,
+            //    RequestTypeId = (byte)RequestTypeEnum.MerchantRegister,
+            //    TrackingNumber = Guid.NewGuid(),
+            //    PspId = x.Id
+            //})
+        }
 
 
         public async Task<Customer> AddCustomer(Customer model)

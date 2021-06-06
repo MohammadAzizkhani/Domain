@@ -38,6 +38,11 @@ namespace Service.Implementation
             return await _context.GuildSubCategories.Where(c => c.CategoryId == categoryId).ToListAsync();
         }
 
+        public async Task<List<Nationality>> GetNationalities(string search)
+        {
+            return await _context.Nationalities.Where(x=>x.NationalName.StartsWith(search)).ToListAsync();
+        }
+
         public async Task<List<Nationality>> GetNationalities()
         {
             return await _context.Nationalities.ToListAsync();

@@ -3,7 +3,11 @@
     public enum RequestTypeEnum : byte
     {
         MerchantRegister = 1,
-        ChangeIban = 2,
-        ChangeGuild
+        ChangeCustomer = 2,
+        ChangeIban = 3,
+        ChangeGuild = 4,
+        ChangePostalCode = 5,
+        TerminalActivation = 6,
+        TerminalDeactivation = 7
     }
 }

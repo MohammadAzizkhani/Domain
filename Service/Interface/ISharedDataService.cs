@@ -13,6 +13,7 @@ namespace Service.Interface
         Task<List<Province>> GetProvinces();
         Task<List<GuildCategory>> GetGuilds();
         Task<List<GuildSubCategory>> GetGuildsSubCategories(int categoryId);
+        Task<List<Nationality>> GetNationalities(string search);
         Task<List<Nationality>> GetNationalities();
         Task<List<Alphabitic>> GetAlphabetic();
         Task<List<Degree>> GetDegrees();

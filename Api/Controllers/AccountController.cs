@@ -10,6 +10,7 @@ using Domain.Models;
 using Domain.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -106,7 +107,18 @@ namespace Api.Controllers
         {
             var users = await _userManager.Users.ToListAsync();
 
-            return Ok(users);
+            var data = users.Select(x => new UserDto
+            {
+                Email = x.Email,
+                Firstname = x.FirstName,
+                Lastname = x.LastName,
+                PhoneNumber = x.PhoneNumber,
+                Role = _userManager.GetRolesAsync(x).Result.FirstOrDefault(),
+                Username = x.UserName,
+                IsActive = x.LockoutEnd == null
+            });
+
+            return Ok(data);
         }
 
         [HttpPost]
@@ -143,7 +155,7 @@ namespace Api.Controllers
                     Code = (int)HttpStatusCode.NotFound,
                 };
 
-            var result = await _userManager.SetLockoutEndDateAsync(user, DateTime.MaxValue);
+            var result = await _userManager.SetLockoutEndDateAsync(user, DateTime.Now.AddYears(20));
 
             if (result.Succeeded)
                 return Ok();

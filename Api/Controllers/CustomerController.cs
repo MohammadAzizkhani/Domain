@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Api.Viewmodel;
 using AutoMapper;
 using Domain.Filters;
 using Domain.Models;
+using Domain.Utility;
 using Service.Interface;
 
 namespace Api.Controllers
@@ -24,16 +24,6 @@ namespace Api.Controllers
             _customerService = customerService;
         }
 
-        [HttpPost("add-customer")]
-        public async Task<IActionResult> AddCustomer(AddCustomerViewModel addCustomerViewModel)
-        {
-            var model = _mapper.Map<AddCustomerViewModel, Customer>(addCustomerViewModel);
-
-            var customer = await _customerService.AddCustomer(model);
-
-            return Ok(customer);
-        }
-
         [HttpPost("add-person")]
         public async Task<IActionResult> AddPerson(AddPersonViewModel addPersonViewModel)
         {
@@ -44,12 +34,33 @@ namespace Api.Controllers
             return Ok(person);
         }
 
+        [HttpPost("add-customer")]
+        public async Task<IActionResult> AddCustomer(AddCustomerViewModel addCustomerViewModel)
+        {
+            var model = _mapper.Map<AddCustomerViewModel, Customer>(addCustomerViewModel);
+
+            var customer = await _customerService.AddCustomer(model);
+
+            return Ok(customer);
+        }
+
         [HttpGet("customers")]
         public async Task<IActionResult> GetCustomers([FromQuery] CustomerFilter filter)
         {
             var customers = await _customerService.GetCustomers(filter);
 
-            return Ok(customers);
+            var data = _mapper.Map<PageCollection<Customer>, PageCollection<CustomerDto>>(customers);
+
+            return Ok(data);
+        }
+
+
+        [HttpPost("edit-guild")]
+        public async Task<IActionResult> EditGuild(EditGuildViewModel filter)
+        {
+            await _customerService.EditGuild(filter.CustomerId, filter.GuildId);
+
+            return Ok();
         }
     }
 }
