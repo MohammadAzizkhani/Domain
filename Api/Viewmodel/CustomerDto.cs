@@ -7,6 +7,7 @@ namespace Api.Viewmodel
 {
     public class CustomerDto
     {
+        public long Id { get; set; }
         public string MobileNumber { get; set; }
         public string Telephone { get; set; }
         public string AddressFa { get; set; }

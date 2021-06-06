@@ -137,6 +137,7 @@ namespace Api
 
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ISharedDataService, SharedDataService>();
+            services.AddScoped<IBaseInfoService, BaseInfoService>();
             services.AddScoped<IIbanService, IbanService>();
 
             services.AddCors();

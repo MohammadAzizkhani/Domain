@@ -55,7 +55,6 @@ namespace Api.Controllers
             return Ok(data);
         }
 
-
         [HttpPost("edit-guild")]
         public async Task<IActionResult> EditGuild(EditGuildViewModel model)
         {
@@ -84,14 +83,6 @@ namespace Api.Controllers
         public async Task<IActionResult> DeactivateTerminals(long customerId)
         {
             await _customerService.DeactivateTerminals(customerId);
-
-            return Ok();
-        }
-
-        [HttpPost("add-ibans")]
-        public async Task<IActionResult> AddIbans(List<CustomersIban> ibans)
-        {
-            await _customerService.AddCustomerIbans(ibans);
 
             return Ok();
         }

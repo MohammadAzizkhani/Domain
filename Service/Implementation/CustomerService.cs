@@ -34,16 +34,16 @@ namespace Service.Implementation
                 {
                     if (model.IsLegal.HasValue && model.IsLegal.Value)
                     {
-                        person = _context.People.FirstOrDefault(x => x.RegisterNo == model.RegisterNo);
+                        person = _context.People.FirstOrDefault(x => x.RegisterNo != null && x.RegisterNo == model.RegisterNo);
                     }
                     else
                     {
-                        person = _context.People.FirstOrDefault(x => x.NationalNumber == model.NationalNumber);
+                        person = _context.People.FirstOrDefault(x => x.NationalNumber !=null &&  x.NationalNumber == model.NationalNumber);
                     }
                 }
                 else
                 {
-                    person = _context.People.FirstOrDefault(x => x.ForeignPervasiveCode == model.ForeignPervasiveCode);
+                    person = _context.People.FirstOrDefault(x => x.ForeignPervasiveCode != null &&  x.ForeignPervasiveCode == model.ForeignPervasiveCode);
                 }
             }
 
