@@ -14,6 +14,6 @@ namespace Domain.Models
         public long? CustomerId { get; set; }
         public long? PspId { get; set; }
 
-        public  Request Request { get; set; }
+        public virtual Request Request { get; set; }
     }
 }

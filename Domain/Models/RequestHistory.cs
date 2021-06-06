@@ -16,6 +16,6 @@ namespace Domain.Models
         public string ShaparakTrackingNumber { get; set; }
         public Guid? TrackingNumber { get; set; }
 
-        public  Request Request { get; set; }
+        public virtual Request Request { get; set; }
     }
 }

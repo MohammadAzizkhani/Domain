@@ -19,6 +19,6 @@ namespace Domain.Models
         public long? ShareAmountMax { get; set; }
         public long? ShareAmountMin { get; set; }
 
-        public  ICollection<Contract> Contracts { get; set; }
+        public virtual ICollection<Contract> Contracts { get; set; }
     }
 }

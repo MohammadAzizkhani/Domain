@@ -49,13 +49,13 @@ namespace Domain.Models
         public int? CityCode { get; set; }
         public string TaxPayerCode { get; set; }
 
-        public  GuildCategory Guild { get; set; }
-        public  Person Person { get; set; }
-        public  ICollection<Contract> Contracts { get; set; }
-        public  ICollection<CustomersIban> CustomersIbans { get; set; }
-        public  ICollection<MarketerContract> MarketerContractCustomers { get; set; }
-        public  ICollection<MarketerContract> MarketerContractMarketers { get; set; }
-        public  ICollection<Merchant> Merchants { get; set; }
-        public  ICollection<Request> Requests { get; set; }
+        public virtual GuildCategory Guild { get; set; }
+        public virtual Person Person { get; set; }
+        public virtual ICollection<Contract> Contracts { get; set; }
+        public virtual ICollection<CustomersIban> CustomersIbans { get; set; }
+        public virtual ICollection<MarketerContract> MarketerContractCustomers { get; set; }
+        public virtual ICollection<MarketerContract> MarketerContractMarketers { get; set; }
+        public virtual ICollection<Merchant> Merchants { get; set; }
+        public virtual ICollection<Request> Requests { get; set; }
     }
 }

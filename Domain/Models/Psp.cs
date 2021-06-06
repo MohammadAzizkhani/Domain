@@ -32,7 +32,7 @@ namespace Domain.Models
         public byte? StepsCount { get; set; }
         public bool? Enabled { get; set; }
 
-        public  ICollection<Merchant> Merchants { get; set; }
-        public  ICollection<Request> Requests { get; set; }
+        public virtual ICollection<Merchant> Merchants { get; set; }
+        public virtual ICollection<Request> Requests { get; set; }
     }
 }

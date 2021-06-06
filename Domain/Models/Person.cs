@@ -54,9 +54,9 @@ namespace Domain.Models
         public string PassportExpireDate { get; set; }
         public string CommercialCode { get; set; }
 
-        public  Alphabitic BirthCertificateAlphabiticNo { get; set; }
-        public  Degree Degree { get; set; }
-        public  Nationality Nationality { get; set; }
-        public  ICollection<Customer> Customers { get; set; }
+        public virtual Alphabitic BirthCertificateAlphabiticNo { get; set; }
+        public virtual Degree Degree { get; set; }
+        public virtual Nationality Nationality { get; set; }
+        public virtual ICollection<Customer> Customers { get; set; }
     }
 }

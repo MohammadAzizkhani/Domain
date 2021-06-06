@@ -15,6 +15,6 @@ namespace Domain.Models
         public int Id { get; set; }
         public string AlphabiticChar { get; set; }
 
-        public ICollection<Person> People { get; set; }
+        public virtual ICollection<Person> People { get; set; }
     }
 }

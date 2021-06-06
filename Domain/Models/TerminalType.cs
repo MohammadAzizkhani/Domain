@@ -16,6 +16,6 @@ namespace Domain.Models
         public string TerminalTypeName { get; set; }
         public string Description { get; set; }
 
-        public  ICollection<Merchant> Merchants { get; set; }
+        public virtual ICollection<Merchant> Merchants { get; set; }
     }
 }

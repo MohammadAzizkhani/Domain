@@ -17,6 +17,6 @@ namespace Domain.Models
         public long? ShareAmountMin { get; set; }
         public bool? IsMain { get; set; }
 
-        public  Customer Customer { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }

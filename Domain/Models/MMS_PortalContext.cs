@@ -1,75 +1,81 @@
-﻿using System;
-using Domain.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Domain.DbContext
+namespace Domain.Models
 {
     public partial class MMS_PortalContext : Microsoft.EntityFrameworkCore.DbContext
     {
         public MMS_PortalContext()
         {
-            
         }
-        
 
         public MMS_PortalContext(DbContextOptions<MMS_PortalContext> options)
             : base(options)
         {
         }
 
-        public DbSet<Alphabitic> Alphabitics { get; set; }
-        public DbSet<Bank> Banks { get; set; }
-        public DbSet<City> Cities { get; set; }
-        public DbSet<Contract> Contracts { get; set; }
-        public DbSet<Country> Countries { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<CustomerEditInfoRequest> CustomerEditInfoRequests { get; set; }
-        public DbSet<CustomersIban> CustomersIbans { get; set; }
-        public DbSet<Degree> Degrees { get; set; }
-        public DbSet<GuildCategory> GuildCategories { get; set; }
-        public DbSet<GuildSubCategory> GuildSubCategories { get; set; }
-        public DbSet<InputRegaccPsp> InputRegaccPsps { get; set; }
-        public DbSet<InputRegaccPspVw> InputRegaccPspVws { get; set; }
-        public DbSet<Log> Logs { get; set; }
-        public DbSet<MarketerContract> MarketerContracts { get; set; }
-        public DbSet<Merchant> Merchants { get; set; }
-        public DbSet<MerchantState> MerchantStates { get; set; }
-        public DbSet<MerchantSyncTable> MerchantSyncTables { get; set; }
-        public DbSet<Nationality> Nationalities { get; set; }
-        public DbSet<NewGuildAndPostalCodeRequest> NewGuildAndPostalCodeRequests { get; set; }
-        public DbSet<NewIbanRequest> NewIbanRequests { get; set; }
-        public DbSet<Permission> Permissions { get; set; }
-        public DbSet<Person> People { get; set; }
-        public DbSet<PersonEditInfoRequest> PersonEditInfoRequests { get; set; }
-        public DbSet<Project> Projects { get; set; }
-        public DbSet<Province> Provinces { get; set; }
-        public DbSet<Psp> Psps { get; set; }
-        public DbSet<Request> Requests { get; set; }
-        public DbSet<RequestHistory> RequestHistories { get; set; }
-        public DbSet<RequestState> RequestStates { get; set; }
-        public DbSet<RequestType> RequestTypes { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<RolePermission> RolePermissions { get; set; }
-        public DbSet<SharedType> SharedTypes { get; set; }
-        public DbSet<ShpAcceptorInfoVw> ShpAcceptorInfoVws { get; set; }
-        public DbSet<State> States { get; set; }
-        public DbSet<TerminalType> TerminalTypes { get; set; }
-        public DbSet<Token> Tokens { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<UsersPermission> UsersPermissions { get; set; }
-        public DbSet<WebServiceUser> WebServiceUsers { get; set; }
+        public virtual DbSet<Alphabitic> Alphabitics { get; set; }
+        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetRoleClaim> AspNetRoleClaims { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUserRole> AspNetUserRoles { get; set; }
+        public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
+        public virtual DbSet<Bank> Banks { get; set; }
+        public virtual DbSet<City> Cities { get; set; }
+        public virtual DbSet<Contract> Contracts { get; set; }
+        public virtual DbSet<Country> Countries { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<CustomerEditInfoRequest> CustomerEditInfoRequests { get; set; }
+        public virtual DbSet<CustomersIban> CustomersIbans { get; set; }
+        public virtual DbSet<Degree> Degrees { get; set; }
+        public virtual DbSet<GuildCategory> GuildCategories { get; set; }
+        public virtual DbSet<GuildSubCategory> GuildSubCategories { get; set; }
+        public virtual DbSet<InputRegaccPsp> InputRegaccPsps { get; set; }
+        public virtual DbSet<InputRegaccPspVw> InputRegaccPspVws { get; set; }
+        public virtual DbSet<Log> Logs { get; set; }
+        public virtual DbSet<MarketerContract> MarketerContracts { get; set; }
+        public virtual DbSet<Merchant> Merchants { get; set; }
+        public virtual DbSet<MerchantState> MerchantStates { get; set; }
+        public virtual DbSet<MerchantSyncTable> MerchantSyncTables { get; set; }
+        public virtual DbSet<Nationality> Nationalities { get; set; }
+        public virtual DbSet<NewGuildAndPostalCodeRequest> NewGuildAndPostalCodeRequests { get; set; }
+        public virtual DbSet<NewIbanRequest> NewIbanRequests { get; set; }
+        public virtual DbSet<Permission> Permissions { get; set; }
+        public virtual DbSet<Person> People { get; set; }
+        public virtual DbSet<PersonEditInfoRequest> PersonEditInfoRequests { get; set; }
+        public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<Province> Provinces { get; set; }
+        public virtual DbSet<Psp> Psps { get; set; }
+        public virtual DbSet<Request> Requests { get; set; }
+        public virtual DbSet<RequestDetail> RequestDetails { get; set; }
+        public virtual DbSet<RequestHistory> RequestHistories { get; set; }
+        public virtual DbSet<RequestState> RequestStates { get; set; }
+        public virtual DbSet<RequestType> RequestTypes { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<RolePermission> RolePermissions { get; set; }
+        public virtual DbSet<SharedType> SharedTypes { get; set; }
+        public virtual DbSet<ShpAcceptorInfoVw> ShpAcceptorInfoVws { get; set; }
+        public virtual DbSet<State> States { get; set; }
+        public virtual DbSet<TerminalType> TerminalTypes { get; set; }
+        public virtual DbSet<Token> Tokens { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UsersPermission> UsersPermissions { get; set; }
+        public virtual DbSet<WebServiceUser> WebServiceUsers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
-            optionsBuilder.LogTo(Console.WriteLine);
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=.;Database=MMS_Portal;uid=sa;pwd=123456;");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
             modelBuilder.Entity<Alphabitic>(entity =>
@@ -79,6 +85,97 @@ namespace Domain.DbContext
                 entity.Property(e => e.AlphabiticChar)
                     .IsRequired()
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<AspNetRole>(entity =>
+            {
+                entity.HasIndex(e => e.NormalizedName, "RoleNameIndex")
+                    .IsUnique()
+                    .HasFilter("([NormalizedName] IS NOT NULL)");
+
+                entity.Property(e => e.Name).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedName).HasMaxLength(256);
+            });
+
+            modelBuilder.Entity<AspNetRoleClaim>(entity =>
+            {
+                entity.HasIndex(e => e.RoleId, "IX_AspNetRoleClaims_RoleId");
+
+                entity.Property(e => e.RoleId).IsRequired();
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.AspNetRoleClaims)
+                    .HasForeignKey(d => d.RoleId);
+            });
+
+            modelBuilder.Entity<AspNetUser>(entity =>
+            {
+                entity.HasIndex(e => e.NormalizedEmail, "EmailIndex");
+
+                entity.HasIndex(e => e.NormalizedUserName, "UserNameIndex")
+                    .IsUnique()
+                    .HasFilter("([NormalizedUserName] IS NOT NULL)");
+
+                entity.Property(e => e.Email).HasMaxLength(256);
+
+                entity.Property(e => e.FirstName).HasMaxLength(100);
+
+                entity.Property(e => e.LastName).HasMaxLength(200);
+
+                entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
+
+                entity.Property(e => e.UserName).HasMaxLength(256);
+            });
+
+            modelBuilder.Entity<AspNetUserClaim>(entity =>
+            {
+                entity.HasIndex(e => e.UserId, "IX_AspNetUserClaims_UserId");
+
+                entity.Property(e => e.UserId).IsRequired();
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserClaims)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserLogin>(entity =>
+            {
+                entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
+
+                entity.HasIndex(e => e.UserId, "IX_AspNetUserLogins_UserId");
+
+                entity.Property(e => e.UserId).IsRequired();
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserLogins)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserRole>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.RoleId });
+
+                entity.HasIndex(e => e.RoleId, "IX_AspNetUserRoles_RoleId");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.AspNetUserRoles)
+                    .HasForeignKey(d => d.RoleId);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserRoles)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserToken>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserTokens)
+                    .HasForeignKey(d => d.UserId);
             });
 
             modelBuilder.Entity<Bank>(entity =>
@@ -411,7 +508,9 @@ namespace Domain.DbContext
 
                 entity.ToView("input_regacc_psp");
 
-                entity.Property(e => e.AddressEn).HasMaxLength(500);
+                entity.Property(e => e.AddressEn)
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.AddressFa).HasMaxLength(500);
 
@@ -439,7 +538,9 @@ namespace Domain.DbContext
 
                 entity.Property(e => e.CustomerValue).HasMaxLength(200);
 
-                entity.Property(e => e.Email).HasMaxLength(50);
+                entity.Property(e => e.Email)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.FatherNameEn).HasMaxLength(100);
 
@@ -499,7 +600,9 @@ namespace Domain.DbContext
 
                 entity.Property(e => e.ShopEmail).HasMaxLength(50);
 
-                entity.Property(e => e.ShopFaxNumber).HasMaxLength(50);
+                entity.Property(e => e.ShopFaxNumber)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.ShopLogo).IsUnicode(false);
 
@@ -513,7 +616,9 @@ namespace Domain.DbContext
 
                 entity.Property(e => e.ShopTelephoneNumber).HasMaxLength(50);
 
-                entity.Property(e => e.Telephone).HasMaxLength(50);
+                entity.Property(e => e.Telephone)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.WebSiteAddress).HasMaxLength(50);
 
@@ -1113,6 +1218,19 @@ namespace Domain.DbContext
                     .WithMany(p => p.Requests)
                     .HasForeignKey(d => d.RequestTypeId)
                     .HasConstraintName("FK_Request_RequestType");
+            });
+
+            modelBuilder.Entity<RequestDetail>(entity =>
+            {
+                entity.ToTable("RequestDetail");
+
+                entity.Property(e => e.Data).IsRequired();
+
+                entity.HasOne(d => d.Request)
+                    .WithMany(p => p.RequestDetails)
+                    .HasForeignKey(d => d.RequestId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Request_RequestData");
             });
 
             modelBuilder.Entity<RequestHistory>(entity =>
