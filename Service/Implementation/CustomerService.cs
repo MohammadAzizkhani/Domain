@@ -10,6 +10,7 @@ using Domain.Filters;
 using Domain.Models;
 using Domain.Utility;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;
 using Service.Interface;
 
@@ -58,11 +59,9 @@ namespace Service.Implementation
             return model;
         }
 
-
-
         public async Task<PageCollection<Customer>> GetCustomers(CustomerFilter filter)
         {
-            var query = _context.Customers.Include(x=>x.Guild).AsQueryable();
+            var query = _context.Customers.Include(x => x.Guild).AsQueryable();
 
             //var columnsMap = new Dictionary<string, Expression<Func<Customer, object>>>
             //{
@@ -105,19 +104,115 @@ namespace Service.Implementation
             {
                 CustomerId = customerId,
                 InsertDateTime = DateTime.Now,
-                RequestTypeId = (byte)RequestTypeEnum.MerchantRegister,
+                RequestTypeId = (byte)RequestTypeEnum.ChangeGuild,
                 TrackingNumber = Guid.NewGuid(),
                 PspId = x.Id,
+                RequestDetails = new List<RequestDetail>
+                {
+                    new()
+                    {
+                        Data = JsonConvert.SerializeObject(new {customerId,guildId})
+                    }
+                }
             }).ToList();
 
-            //_context.Requests.AddAsync(new Request
-            //{
-            //    CustomerId = customerId,
-            //    InsertDateTime = DateTime.Now,
-            //    RequestTypeId = (byte)RequestTypeEnum.MerchantRegister,
-            //    TrackingNumber = Guid.NewGuid(),
-            //    PspId = x.Id
-            //})
+            await _context.Requests.AddRangeAsync(requests);
+
+            await _context.SaveChangesAsync();
+
+        }
+
+        public async Task EditPostalCode(long customerId, string postalCode)
+        {
+            var pspList = await _context.Psps.ToListAsync();
+
+            var requests = pspList.Select(x => new Request
+            {
+                CustomerId = customerId,
+                InsertDateTime = DateTime.Now,
+                RequestTypeId = (byte)RequestTypeEnum.ChangePostalCode,
+                TrackingNumber = Guid.NewGuid(),
+                PspId = x.Id,
+                RequestDetails = new List<RequestDetail>
+                {
+                    new()
+                    {
+                        Data = JsonConvert.SerializeObject(new {customerId,postalCode})
+                    }
+                }
+            }).ToList();
+
+            await _context.Requests.AddRangeAsync(requests);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ActivateTerminals(long customerId)
+        {
+            var pspList = await _context.Psps.ToListAsync();
+
+            var requests = pspList.Select(x => new Request
+            {
+                CustomerId = customerId,
+                InsertDateTime = DateTime.Now,
+                RequestTypeId = (byte)RequestTypeEnum.TerminalActivation,
+                TrackingNumber = Guid.NewGuid(),
+                PspId = x.Id
+            }).ToList();
+
+            await _context.Requests.AddRangeAsync(requests);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeactivateTerminals(long customerId)
+        {
+            var pspList = await _context.Psps.ToListAsync();
+
+            var requests = pspList.Select(x => new Request
+            {
+                CustomerId = customerId,
+                InsertDateTime = DateTime.Now,
+                RequestTypeId = (byte)RequestTypeEnum.TerminalDeactivation,
+                TrackingNumber = Guid.NewGuid(),
+                PspId = x.Id
+            }).ToList();
+
+            await _context.Requests.AddRangeAsync(requests);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<CustomersIban>> GetCustomerIban(long customerId)
+        {
+            return await _context.CustomersIbans.Where(x => x.CustomerId == customerId).ToListAsync();
+        }
+
+        public async Task EditCustomerIbans(List<CustomersIban> ibans)
+        {
+            var pspList = await _context.Psps.ToListAsync();
+
+            var customerId = ibans.FirstOrDefault()?.CustomerId;
+
+            var requests = pspList.Select(x => new Request
+            {
+                CustomerId = customerId,
+                InsertDateTime = DateTime.Now,
+                RequestTypeId = (byte)RequestTypeEnum.ChangeIban,
+                TrackingNumber = Guid.NewGuid(),
+                PspId = x.Id,
+                RequestDetails = new List<RequestDetail>
+                {
+                    new()
+                    {
+                        Data = JsonConvert.SerializeObject(ibans)
+                    }
+                }
+            }).ToList();
+
+            await _context.Requests.AddRangeAsync(requests);
+
+            await _context.SaveChangesAsync();
         }
 
 
@@ -139,6 +234,44 @@ namespace Service.Implementation
             await _context.SaveChangesAsync();
 
             return model;
+        }
+
+        public async Task AddCustomerIbans(List<CustomersIban> ibans)
+        {
+            await _context.CustomersIbans.AddRangeAsync(ibans);
+
+            var pspList = await _context.Psps.ToListAsync();
+
+            var customerId = ibans.FirstOrDefault()?.CustomerId;
+
+            var requests = pspList.Select(x => new Request
+            {
+                CustomerId = customerId,
+                InsertDateTime = DateTime.Now,
+                RequestTypeId = (byte)RequestTypeEnum.MerchantRegister,
+                TrackingNumber = Guid.NewGuid(),
+                PspId = x.Id
+            }).ToList();
+
+            await _context.Requests.AddRangeAsync(requests);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<PageCollection<Request>> GetRequests(RequestFilter filter)
+        {
+            var query = _context.Requests.AsQueryable();
+
+            var count = await query.CountAsync();
+
+            query = query.ApplyPaging(filter);
+
+            return new PageCollection<Request>
+            {
+                Data = await query.ToListAsync(),
+                Pages = count / filter.PageSize,
+                TotalRecord = count
+            };
         }
     }
 }

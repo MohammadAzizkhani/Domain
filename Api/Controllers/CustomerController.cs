@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Api.Viewmodel;
 using AutoMapper;
@@ -56,11 +57,77 @@ namespace Api.Controllers
 
 
         [HttpPost("edit-guild")]
-        public async Task<IActionResult> EditGuild(EditGuildViewModel filter)
+        public async Task<IActionResult> EditGuild(EditGuildViewModel model)
         {
-            await _customerService.EditGuild(filter.CustomerId, filter.GuildId);
+            await _customerService.EditGuild(model.CustomerId, model.GuildId);
 
             return Ok();
+        }
+
+        [HttpPost("edit-postalCode")]
+        public async Task<IActionResult> EditPostalCode(EditPostalCodeViewModel model)
+        {
+            await _customerService.EditPostalCode(model.CustomerId, model.ShopPostalCode);
+
+            return Ok();
+        }
+
+        [HttpPost("activate-terminals")]
+        public async Task<IActionResult> ActivateTerminals(long customerId)
+        {
+            await _customerService.ActivateTerminals(customerId);
+
+            return Ok();
+        }
+
+        [HttpPost("deactivate-terminals")]
+        public async Task<IActionResult> DeactivateTerminals(long customerId)
+        {
+            await _customerService.DeactivateTerminals(customerId);
+
+            return Ok();
+        }
+
+        [HttpPost("add-ibans")]
+        public async Task<IActionResult> AddIbans(List<CustomersIban> ibans)
+        {
+            await _customerService.AddCustomerIbans(ibans);
+
+            return Ok();
+        }
+
+        [HttpPost("add-Iban")]
+        public async Task<IActionResult> AddIban(List<AddIbanViewModel> addPersonViewModel)
+        {
+            var model = _mapper.Map<List<AddIbanViewModel>, List<CustomersIban>>(addPersonViewModel);
+
+            await _customerService.AddCustomerIbans(model);
+
+            return Ok();
+        }
+
+        [HttpGet("get-customer-ibans")]
+        public async Task<IActionResult> GetCustomerIban(long customerId)
+        {
+            var data = await _customerService.GetCustomerIban(customerId);
+
+            return Ok(data);
+        }
+
+        [HttpPost("change-ibans")]
+        public async Task<IActionResult> ChageIbans(List<CustomersIban> ibans)
+        {
+            await _customerService.EditCustomerIbans(ibans);
+
+            return Ok();
+        }
+
+        [HttpGet("requests")]
+        public async Task<IActionResult> GetRequests([FromQuery] RequestFilter filter)
+        {
+            var data = await _customerService.GetRequests(filter);
+
+            return Ok(data);
         }
     }
 }

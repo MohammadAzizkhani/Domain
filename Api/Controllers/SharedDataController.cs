@@ -100,5 +100,13 @@ namespace Api.Controllers
 
             return Ok(data);
         }
+
+        [HttpGet("search-countries")]
+        public async Task<IActionResult> GetCountries(string name)
+        {
+            var data = await _sharedDataService.GetCountries(name);
+
+            return Ok(data);
+        }
     }
 }

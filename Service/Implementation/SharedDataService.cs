@@ -59,5 +59,10 @@ namespace Service.Implementation
         {
             return await _context.Countries.ToListAsync();
         }
+
+        public async Task<List<Country>> GetCountries(string name)
+        {
+            return await _context.Countries.Where(x=>x.FarsiName.StartsWith(name)).ToListAsync();
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Domain.Filters;
 using Domain.Models;
 using Domain.Utility;
@@ -11,5 +12,12 @@ namespace Service.Interface
         Task<Person> AddPerson(Person model);
         Task<PageCollection<Customer>> GetCustomers(CustomerFilter filter);
         Task EditGuild(long customerId, int guildId);
+        Task EditPostalCode(long customerId, string postalCode);
+        Task ActivateTerminals(long customerId);
+        Task DeactivateTerminals(long customerId);
+        Task<List<CustomersIban>> GetCustomerIban(long customerId);
+        Task EditCustomerIbans(List<CustomersIban> ibans);
+        Task AddCustomerIbans(List<CustomersIban> ibans);
+        Task<PageCollection<Request>> GetRequests(RequestFilter filter);
     }
 }

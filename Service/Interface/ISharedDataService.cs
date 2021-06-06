@@ -18,5 +18,6 @@ namespace Service.Interface
         Task<List<Alphabitic>> GetAlphabetic();
         Task<List<Degree>> GetDegrees();
         Task<List<Country>> GetCountries();
+        Task<List<Country>> GetCountries(string name);
     }
 }
