@@ -25,38 +25,47 @@ namespace Service.Implementation
             _context = context;
         }
 
-        public async Task<Person> AddPerson(Person model)
+        public async Task AddPerson(Person model)
         {
             Person person = null;
-            if (model.IsForeign.HasValue)
+
+            if (model.IsLegal.HasValue && !model.IsLegal.Value)
             {
-                if (!model.IsForeign.Value)
-                {
-                    if (model.IsLegal.HasValue && model.IsLegal.Value)
-                    {
-                        person = _context.People.FirstOrDefault(x => x.RegisterNo != null && x.RegisterNo == model.RegisterNo);
-                    }
-                    else
-                    {
-                        person = _context.People.FirstOrDefault(x => x.NationalNumber !=null &&  x.NationalNumber == model.NationalNumber);
-                    }
-                }
-                else
-                {
-                    person = _context.People.FirstOrDefault(x => x.ForeignPervasiveCode != null &&  x.ForeignPervasiveCode == model.ForeignPervasiveCode);
-                }
+                person = _context.People.FirstOrDefault(x => x.NationalNumber != null && x.NationalNumber == model.NationalNumber);
             }
 
-            if (person != null)
+            if (model.IsForeign.HasValue && model.IsForeign.Value)
             {
-                return person;
+                person = _context.People.FirstOrDefault(x => x.ForeignPervasiveCode != null && x.ForeignPervasiveCode == model.ForeignPervasiveCode);
             }
 
-            await _context.People.AddAsync(model);
+            if (model.IsLegal.HasValue && model.IsLegal.Value)
+            {
+                person = _context.People.FirstOrDefault(x => x.RegisterNo != null && x.RegisterNo == model.RegisterNo);
+            }
+
+            if (person == null)
+            {
+                await _context.People.AddAsync(model);
+                await _context.SaveChangesAsync();
+                return;
+            }
+
+
+            var inputPostalCode = model.Customers.First().ShopPostalCode;
+            var inputGuildId = model.Customers.First().GuildId;
+            if (person.Customers.Any(x => x.ShopPostalCode == inputPostalCode && x.GuildId == inputGuildId))
+            {
+                throw new MMSPortalException(CreateCustomerException.AlreadyExist.GetEnumDescription());
+            }
+
+            var inputCustomer = model.Customers.First();
+            inputCustomer.PersonId = person.Id;
+
+            await _context.Customers.AddAsync(inputCustomer);
 
             await _context.SaveChangesAsync();
 
-            return model;
         }
 
         public async Task<PageCollection<Customer>> GetCustomers(CustomerFilter filter)
@@ -272,6 +281,25 @@ namespace Service.Implementation
                 Pages = count / filter.PageSize,
                 TotalRecord = count
             };
+        }
+
+        public async Task<Person> GetPerson(PersonType type, string uniqueIdentifier)
+        {
+            switch (type)
+            {
+                case PersonType.RealPerson:
+                    return await _context.People.FirstOrDefaultAsync(x => x.NationalNumber != null && x.NationalNumber == uniqueIdentifier);
+
+                case PersonType.LegalPerson:
+                    return await _context.People.FirstOrDefaultAsync(x =>
+                        x.RegisterNo != null && x.RegisterNo == uniqueIdentifier);
+
+                case PersonType.Foreign:
+                    return await _context.People.FirstOrDefaultAsync(x =>
+                        x.ForeignPervasiveCode != null && x.ForeignPervasiveCode == uniqueIdentifier);
+                default:
+                    return null;
+            }
         }
     }
 }

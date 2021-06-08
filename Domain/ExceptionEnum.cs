@@ -27,4 +27,16 @@ namespace Domain
         [Description("شخصی با این کد ملی وجود دارد.")]
         AlreadyExist = 0
     }
+
+    public enum CreateCustomerException
+    {
+        [Description("شخصی با این کد پسنی و صنف وجود دارد.")]
+        AlreadyExist = 0
+    }
+
+    public enum GeneralException
+    {
+        [Description("Not Exist")]
+        NotFound = 0
+    }
 }

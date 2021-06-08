@@ -128,6 +128,7 @@ namespace Api
                 {
                     cfg.AddProfile<CustomerProfile>();
                     cfg.AddProfile<PersonProfile>();
+                    cfg.AddProfile<BaseInfoProfile>();
                 });
                 return config.CreateMapper();
             });

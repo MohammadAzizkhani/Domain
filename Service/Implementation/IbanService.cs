@@ -29,7 +29,7 @@ namespace Service.Implementation
             {
                 CustomerId = x.CustomerId,
                 InsertDateTime = DateTime.Now,
-                RequestTypeId = (byte)RequestTypeEnum.IbanRegister,
+                RequestTypeId = (byte)RequestTypeEnum.MerchantRegister,
                 RequestData = JsonConvert.SerializeObject(x),
                 TrackingNumber = Guid.NewGuid(),
                 PspId = x.Id

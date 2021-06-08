@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.Models;
 
 namespace Api.Viewmodel
 {
     public class AddCustomerViewModel
     {
-        public long PersonId { get; set; }
         public string MobileNumber { get; set; }
         public string Telephone { get; set; }
         public string AddressFa { get; set; }
@@ -34,5 +34,7 @@ namespace Api.Viewmodel
         public string CountryAbbreviation { get; set; }
         public int CityCode { get; set; }
         public string TaxPayerCode { get; set; }
+        public List<AddIbanViewModel> Ibans { get; set; }
+        public ContractViewModel Contract { get; set; }
     }
 }

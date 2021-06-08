@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Domain.Enums;
+using Domain.Models;
+using Domain.Utility;
 using Service.Interface;
 
 namespace Api.Controllers
@@ -87,9 +90,9 @@ namespace Api.Controllers
         {
             return Ok(new List<object>
             {
-                new {Id = 1, Name = "حقیقی"},
-                new {Id = 2, Name = "حقوقی"},
-                new {Id = 3, Name = "اتباع"}
+                new {Id = (int)PersonType.RealPerson, Name = PersonType.RealPerson.GetEnumDescription()},
+                new {Id = (int)PersonType.LegalPerson, Name = PersonType.LegalPerson.GetEnumDescription()},
+                new {Id = (int)PersonType.Foreign, Name = PersonType.Foreign.GetEnumDescription()}
             });
         }
 

@@ -40,6 +40,7 @@ namespace Api.Viewmodel
         public string PassportNo { get; set; }
         public string PassportExpireDate { get; set; }
         public string CommercialCode { get; set; }
+        public AddCustomerViewModel Customer { get; set; }
 
     }
 }

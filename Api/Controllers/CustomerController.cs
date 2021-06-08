@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Api.Viewmodel;
 using AutoMapper;
+using Domain.Enums;
 using Domain.Filters;
 using Domain.Models;
 using Domain.Utility;
@@ -25,15 +26,24 @@ namespace Api.Controllers
             _customerService = customerService;
         }
 
-        [HttpPost("add-person")]
-        public async Task<IActionResult> AddPerson(AddPersonViewModel addPersonViewModel)
+        [HttpPost("define-acceptor")]
+        public async Task<IActionResult> DefineAcceptor(AddPersonViewModel addPersonViewModel)
         {
             var model = _mapper.Map<AddPersonViewModel, Person>(addPersonViewModel);
 
-            var person = await _customerService.AddPerson(model);
+            await _customerService.AddPerson(model);
+
+            return Ok();
+        }
+
+        [HttpGet("get-person")]
+        public async Task<IActionResult> GetPerson([FromQuery] PersonType type, [FromQuery] string uniqueIdentifier)
+        {
+            var person = await _customerService.GetPerson(type, uniqueIdentifier);
 
             return Ok(person);
         }
+
 
         [HttpPost("add-customer")]
         public async Task<IActionResult> AddCustomer(AddCustomerViewModel addCustomerViewModel)
