@@ -32,5 +32,6 @@ namespace Api.Viewmodel
         public string ProvinceAbbreviation { get; set; }
         public string CountryAbbreviation { get; set; }
         public string TaxPayerCode { get; set; }
+
     }
 }

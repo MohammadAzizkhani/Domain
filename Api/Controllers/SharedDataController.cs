@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Domain.Enums;
@@ -110,6 +111,26 @@ namespace Api.Controllers
             var data = await _sharedDataService.GetCountries(name);
 
             return Ok(data);
+        }
+
+        [HttpGet("share-type")]
+        public IActionResult GetShareType()
+        {
+            return Ok(new List<object>
+            {
+                new
+                {
+                    Id = (int)ShareTypeEnum.Percentage,
+                    Name = ShareTypeEnum.Percentage.GetEnumDescription(),
+                    sharedTypeCode =(int)ShareTypeEnum.Percentage
+                },
+                new
+                {
+                    Id = (int)ShareTypeEnum.Amount, 
+                    Name = ShareTypeEnum.Amount.GetEnumDescription(),
+                    sharedTypeCode =(int)ShareTypeEnum.Amount
+                }
+            });
         }
     }
 }

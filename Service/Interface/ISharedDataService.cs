@@ -19,5 +19,6 @@ namespace Service.Interface
         Task<List<Degree>> GetDegrees();
         Task<List<Country>> GetCountries();
         Task<List<Country>> GetCountries(string name);
+        Task<List<SharedType>> GetShareTypes();
     }
 }

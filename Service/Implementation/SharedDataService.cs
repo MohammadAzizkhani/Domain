@@ -64,5 +64,10 @@ namespace Service.Implementation
         {
             return await _context.Countries.Where(x=>x.FarsiName.StartsWith(name)).ToListAsync();
         }
+
+        public async Task<List<SharedType>> GetShareTypes()
+        {
+            return await _context.SharedTypes.ToListAsync();
+        }
     }
 }

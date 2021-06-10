@@ -46,6 +46,15 @@ namespace Service.Implementation
 
             if (person == null)
             {
+                var pspList = await _context.Psps.ToListAsync();
+                var requests = pspList.Select(x => new Request
+                {
+                    InsertDateTime = DateTime.Now,
+                    RequestTypeId = (byte)RequestTypeEnum.MerchantRegister,
+                    TrackingNumber = Guid.NewGuid(),
+                    PspId = x.Id
+                }).ToList();
+                model.Customers.First().Requests = requests;
                 await _context.People.AddAsync(model);
                 await _context.SaveChangesAsync();
                 return;
@@ -83,10 +92,25 @@ namespace Service.Implementation
             {
                 query = query.Where(x => x.Person.NationalNumber == filter.NationalId);
             }
-
             if (!string.IsNullOrEmpty(filter.ShopName))
             {
                 query = query.Where(x => x.ShopNameEn == filter.ShopName || x.ShopNameFa == filter.ShopName);
+            }
+            if (!string.IsNullOrEmpty(filter.Name))
+            {
+                query = query.Where(x => x.Person.FirstNameFa == filter.Name || x.Person.FirstNameFa == filter.Name);
+            }
+            if (!string.IsNullOrEmpty(filter.LastName))
+            {
+                query = query.Where(x => x.Person.LastNameFa == filter.LastName || x.Person.LastNameEn == filter.LastName);
+            }
+            if (!string.IsNullOrEmpty(filter.ForeignPervasiveCode))
+            {
+                query = query.Where(x => x.Person.ForeignPervasiveCode == filter.ForeignPervasiveCode);
+            }
+            if (!string.IsNullOrEmpty(filter.RegisterNo))
+            {
+                query = query.Where(x => x.Person.RegisterNo == filter.RegisterNo);
             }
             var count = await query.CountAsync();
 
@@ -99,7 +123,7 @@ namespace Service.Implementation
             return new PageCollection<Customer>
             {
                 Data = data,
-                Pages = count / filter.PageSize,
+                Pages = (int)Math.Ceiling((double)count / filter.PageSize),
                 TotalRecord = count
             };
 
@@ -285,21 +309,27 @@ namespace Service.Implementation
 
         public async Task<Person> GetPerson(PersonType type, string uniqueIdentifier)
         {
+            Person person = null;
             switch (type)
             {
                 case PersonType.RealPerson:
-                    return await _context.People.FirstOrDefaultAsync(x => x.NationalNumber != null && x.NationalNumber == uniqueIdentifier);
-
+                    person = await _context.People.FirstOrDefaultAsync(x => x.NationalNumber != null && x.NationalNumber == uniqueIdentifier);
+                    break;
                 case PersonType.LegalPerson:
-                    return await _context.People.FirstOrDefaultAsync(x =>
+                    person = await _context.People.FirstOrDefaultAsync(x =>
                         x.RegisterNo != null && x.RegisterNo == uniqueIdentifier);
-
+                    break;
                 case PersonType.Foreign:
-                    return await _context.People.FirstOrDefaultAsync(x =>
+                    person = await _context.People.FirstOrDefaultAsync(x =>
                         x.ForeignPervasiveCode != null && x.ForeignPervasiveCode == uniqueIdentifier);
+                    break;
                 default:
-                    return null;
+                    throw new MMSPortalException(GeneralException.NotFound.GetEnumDescription());
             }
+
+            if(person == null)
+                throw new MMSPortalException(GeneralException.NotFound.GetEnumDescription());
+            return person;
         }
     }
 }
