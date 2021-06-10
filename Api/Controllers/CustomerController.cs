@@ -44,17 +44,6 @@ namespace Api.Controllers
             return Ok(person);
         }
 
-
-        [HttpPost("add-customer")]
-        public async Task<IActionResult> AddCustomer(AddCustomerViewModel addCustomerViewModel)
-        {
-            var model = _mapper.Map<AddCustomerViewModel, Customer>(addCustomerViewModel);
-
-            var customer = await _customerService.AddCustomer(model);
-
-            return Ok(customer);
-        }
-
         [HttpGet("customers")]
         public async Task<IActionResult> GetCustomers([FromQuery] CustomerFilter filter)
         {
@@ -97,15 +86,15 @@ namespace Api.Controllers
             return Ok();
         }
 
-        [HttpPost("add-Iban")]
-        public async Task<IActionResult> AddIban(List<AddIbanViewModel> addPersonViewModel)
-        {
-            var model = _mapper.Map<List<AddIbanViewModel>, List<CustomersIban>>(addPersonViewModel);
+        //[HttpPost("add-Iban")]
+        //public async Task<IActionResult> AddIban(List<AddIbanViewModel> addPersonViewModel)
+        //{
+        //    var model = _mapper.Map<List<AddIbanViewModel>, List<CustomersIban>>(addPersonViewModel);
 
-            await _customerService.AddCustomerIbans(model);
+        //    await _customerService.AddCustomerIbans(model);
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
         [HttpGet("get-customer-ibans")]
         public async Task<IActionResult> GetCustomerIban(long customerId)

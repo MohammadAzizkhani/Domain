@@ -33,6 +33,15 @@ namespace Api.Controllers
 
         }
 
+        //[HttpGet("add-psp")]
+        //public async Task<IActionResult> GetPsps()
+        //{
+        //    var data = await _baseInfoService.GetPsps();
+
+        //    return Ok(data);
+
+        //}
+
         [HttpGet("projects")]
         public async Task<IActionResult> GetProjects()
         {
