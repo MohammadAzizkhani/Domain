@@ -79,7 +79,7 @@ namespace Service.Implementation
 
         public async Task<PageCollection<Customer>> GetCustomers(CustomerFilter filter)
         {
-            var query = _context.Customers.Include(x => x.Guild).AsQueryable();
+            var query = _context.Customers.Include(x => x.Guild).Include(x => x.Merchants).AsQueryable();
 
             //var columnsMap = new Dictionary<string, Expression<Func<Customer, object>>>
             //{
@@ -327,7 +327,7 @@ namespace Service.Implementation
                     throw new MMSPortalException(GeneralException.NotFound.GetEnumDescription());
             }
 
-            if(person == null)
+            if (person == null)
                 throw new MMSPortalException(GeneralException.NotFound.GetEnumDescription());
             return person;
         }

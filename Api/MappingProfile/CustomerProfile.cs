@@ -1,5 +1,6 @@
 ﻿using Api.Viewmodel;
 using AutoMapper;
+using Domain.Enums;
 using Domain.Models;
 using Domain.Utility;
 
@@ -22,6 +23,9 @@ namespace Api.MappingProfile
                 .ForMember(x => x.Email, x => x.MapFrom(x => x.Email))
                 .ForMember(x => x.ShopNameFa, x => x.MapFrom(x => x.ShopNameFa))
                 .ForMember(x => x.Guild, x => x.MapFrom(x => x.Guild.CategoryName));
+
+            CreateMap<Merchant, MerchantViewModel>()
+                .ForMember(x => x.StatusTitle, x => x.MapFrom(x => x.Status == (int)MerchantStateEnum.Enable ? MerchantStateEnum.Enable.GetEnumDescription() : MerchantStateEnum.Disable.GetEnumDescription()));
         }
     }
 }
