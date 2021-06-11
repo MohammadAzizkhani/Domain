@@ -13,6 +13,8 @@ namespace Api.MappingProfile
     {
         public PersonProfile()
         {
+            CreateMap<Person, PersonDto>();
+
             CreateMap<AddPersonViewModel, Person>()
                 .ForMember(p => p.InsertDateTime,
                     x => x.MapFrom(x => DateTime.Now))

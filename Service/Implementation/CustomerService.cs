@@ -79,7 +79,7 @@ namespace Service.Implementation
 
         public async Task<PageCollection<Customer>> GetCustomers(CustomerFilter filter)
         {
-            var query = _context.Customers.Include(x => x.Guild).Include(x => x.Merchants).AsQueryable();
+            var query = _context.Customers.Include(x => x.Guild).Include(x => x.Merchants).Include(p => p.Person).AsQueryable();
 
             //var columnsMap = new Dictionary<string, Expression<Func<Customer, object>>>
             //{
@@ -317,7 +317,7 @@ namespace Service.Implementation
                     break;
                 case PersonType.LegalPerson:
                     person = await _context.People.FirstOrDefaultAsync(x =>
-                        x.RegisterNo != null && x.RegisterNo == uniqueIdentifier);
+                        x.RegisterNo != null && x.NationalLegalCode == uniqueIdentifier);
                     break;
                 case PersonType.Foreign:
                     person = await _context.People.FirstOrDefaultAsync(x =>

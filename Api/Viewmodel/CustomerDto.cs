@@ -33,6 +33,7 @@ namespace Api.Viewmodel
         public string CountryAbbreviation { get; set; }
         public string TaxPayerCode { get; set; }
 
+        public PersonDto Person { get; set; }
         public ICollection<MerchantViewModel> Merchants { get; set; }
     }
 }
