@@ -7,6 +7,8 @@ using Domain.Enums;
 using Domain.Filters;
 using Domain.Models;
 using Domain.Utility;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Service.Interface;
 
 namespace Api.Controllers
@@ -14,6 +16,7 @@ namespace Api.Controllers
     [ApiController]
     [ApiVersion("1")]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CustomerController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -86,28 +89,22 @@ namespace Api.Controllers
             return Ok();
         }
 
-        //[HttpPost("add-Iban")]
-        //public async Task<IActionResult> AddIban(List<AddIbanViewModel> addPersonViewModel)
-        //{
-        //    var model = _mapper.Map<List<AddIbanViewModel>, List<CustomersIban>>(addPersonViewModel);
-
-        //    await _customerService.AddCustomerIbans(model);
-
-        //    return Ok();
-        //}
-
         [HttpGet("get-customer-ibans")]
         public async Task<IActionResult> GetCustomerIban(long customerId)
         {
             var data = await _customerService.GetCustomerIban(customerId);
 
-            return Ok(data);
+            var result = _mapper.Map<List<CustomersIban>, List<IbanDto>>(data);
+
+            return Ok(result);
         }
 
         [HttpPost("change-ibans")]
-        public async Task<IActionResult> ChageIbans(List<CustomersIban> ibans)
+        public async Task<IActionResult> ChageIbans(List<AddIbanViewModel> addPersonViewModel)
         {
-            await _customerService.EditCustomerIbans(ibans);
+            var model = _mapper.Map<List<AddIbanViewModel>, List<CustomersIban>>(addPersonViewModel);
+
+            await _customerService.EditCustomerIbans(model);
 
             return Ok();
         }

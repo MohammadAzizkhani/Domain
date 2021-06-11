@@ -6,6 +6,8 @@ using Api.Viewmodel.Country;
 using AutoMapper;
 using Domain.Filters;
 using Domain.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Service.Interface;
 
 namespace Api.Controllers
@@ -13,6 +15,7 @@ namespace Api.Controllers
     [ApiController]
     [ApiVersion("1")]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BaseInfoController : ControllerBase
     {
         private readonly IBaseInfoService _baseInfoService;

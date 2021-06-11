@@ -19,6 +19,7 @@ namespace Api.Controllers
     [ApiController]
     [ApiVersion("1")]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<CustomIdentityUser> _userManager;
@@ -34,6 +35,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("sign-in")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             var user = await _userManager.FindByNameAsync(loginDto.Username);
@@ -144,7 +146,6 @@ namespace Api.Controllers
 
         [HttpPost]
         [Route("user-lock")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> LockUser(UserLockViewModel request)
         {
             var user = await _userManager.FindByNameAsync(request.Username);
@@ -168,7 +169,6 @@ namespace Api.Controllers
 
         [HttpPost]
         [Route("user-unlock")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> UnlockUser(UserLockViewModel request)
         {
             var user = await _userManager.FindByNameAsync(request.Username);

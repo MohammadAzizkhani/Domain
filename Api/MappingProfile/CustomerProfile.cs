@@ -26,6 +26,11 @@ namespace Api.MappingProfile
 
             CreateMap<Merchant, MerchantViewModel>()
                 .ForMember(x => x.StatusTitle, x => x.MapFrom(x => x.Status == (int)MerchantStateEnum.Enable ? MerchantStateEnum.Enable.GetEnumDescription() : MerchantStateEnum.Disable.GetEnumDescription()));
+
+
+            CreateMap<CustomersIban, AddIbanViewModel>().ReverseMap();
+
+            CreateMap<CustomersIban, IbanDto>();
         }
     }
 }

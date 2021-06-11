@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Domain.Enums;
 using Domain.Models;
 using Domain.Utility;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Service.Interface;
 
 namespace Api.Controllers
@@ -12,6 +14,7 @@ namespace Api.Controllers
     [ApiController]
     [ApiVersion("1")]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class SharedDataController : ControllerBase
     {
         private readonly ISharedDataService _sharedDataService;
