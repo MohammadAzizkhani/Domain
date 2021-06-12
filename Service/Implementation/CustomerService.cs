@@ -140,11 +140,11 @@ namespace Service.Implementation
                 RequestTypeId = (byte)RequestTypeEnum.ChangeGuild,
                 TrackingNumber = Guid.NewGuid(),
                 PspId = x.Id,
-                RequestDetails = new List<RequestDetail>
+                EditGuildRequests = new List<EditGuildRequest>
                 {
                     new()
                     {
-                        Data = JsonConvert.SerializeObject(new {customerId,guildId})
+                        GuildId = guildId
                     }
                 }
             }).ToList();
@@ -166,11 +166,11 @@ namespace Service.Implementation
                 RequestTypeId = (byte)RequestTypeEnum.ChangePostalCode,
                 TrackingNumber = Guid.NewGuid(),
                 PspId = x.Id,
-                RequestDetails = new List<RequestDetail>
+                EditPostalCodeRequests = new List<EditPostalCodeRequest>
                 {
                     new()
                     {
-                        Data = JsonConvert.SerializeObject(new {customerId,postalCode})
+                        PostalCode = postalCode
                     }
                 }
             }).ToList();
@@ -234,13 +234,10 @@ namespace Service.Implementation
                 RequestTypeId = (byte)RequestTypeEnum.ChangeIban,
                 TrackingNumber = Guid.NewGuid(),
                 PspId = x.Id,
-                RequestDetails = new List<RequestDetail>
+                EditIbanRequests = ibans.Select(x => new EditIbanRequest
                 {
-                    new()
-                    {
-                        Data = JsonConvert.SerializeObject(ibans)
-                    }
-                }
+                    Iban = x.Iban
+                }).ToList()
             }).ToList();
 
             await _context.Requests.AddRangeAsync(requests);

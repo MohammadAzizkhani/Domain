@@ -9,6 +9,9 @@ namespace Domain.Models
     {
         public Request()
         {
+            EditGuildRequests = new HashSet<EditGuildRequest>();
+            EditIbanRequests = new HashSet<EditIbanRequest>();
+            EditPostalCodeRequests = new HashSet<EditPostalCodeRequest>();
             NewGuildAndPostalCodeRequests = new HashSet<NewGuildAndPostalCodeRequest>();
             NewIbanRequests = new HashSet<NewIbanRequest>();
             RequestDetails = new HashSet<RequestDetail>();
@@ -34,6 +37,9 @@ namespace Domain.Models
         public virtual Psp Psp { get; set; }
         public virtual RequestState RequestState { get; set; }
         public virtual RequestType RequestType { get; set; }
+        public virtual ICollection<EditGuildRequest> EditGuildRequests { get; set; }
+        public virtual ICollection<EditIbanRequest> EditIbanRequests { get; set; }
+        public virtual ICollection<EditPostalCodeRequest> EditPostalCodeRequests { get; set; }
         public virtual ICollection<NewGuildAndPostalCodeRequest> NewGuildAndPostalCodeRequests { get; set; }
         public virtual ICollection<NewIbanRequest> NewIbanRequests { get; set; }
         public virtual ICollection<RequestDetail> RequestDetails { get; set; }

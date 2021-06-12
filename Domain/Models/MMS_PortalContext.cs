@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
@@ -31,6 +33,9 @@ namespace Domain.Models
         public virtual DbSet<CustomerEditInfoRequest> CustomerEditInfoRequests { get; set; }
         public virtual DbSet<CustomersIban> CustomersIbans { get; set; }
         public virtual DbSet<Degree> Degrees { get; set; }
+        public virtual DbSet<EditGuildRequest> EditGuildRequests { get; set; }
+        public virtual DbSet<EditIbanRequest> EditIbanRequests { get; set; }
+        public virtual DbSet<EditPostalCodeRequest> EditPostalCodeRequests { get; set; }
         public virtual DbSet<GuildCategory> GuildCategories { get; set; }
         public virtual DbSet<GuildSubCategory> GuildSubCategories { get; set; }
         public virtual DbSet<InputRegaccPsp> InputRegaccPsps { get; set; }
@@ -451,6 +456,49 @@ namespace Domain.Models
                 entity.Property(e => e.DegreeName)
                     .HasMaxLength(300)
                     .HasDefaultValueSql("(N'-')");
+            });
+
+            modelBuilder.Entity<EditGuildRequest>(entity =>
+            {
+                entity.ToTable("EditGuildRequest");
+
+                entity.HasOne(d => d.Request)
+                    .WithMany(p => p.EditGuildRequests)
+                    .HasForeignKey(d => d.RequestId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_EditGuildRequest_EditGuildRequest");
+            });
+
+            modelBuilder.Entity<EditIbanRequest>(entity =>
+            {
+                entity.ToTable("EditIbanRequest");
+
+                entity.Property(e => e.Iban)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Request)
+                    .WithMany(p => p.EditIbanRequests)
+                    .HasForeignKey(d => d.RequestId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_EditIbanRequest_Request");
+            });
+
+            modelBuilder.Entity<EditPostalCodeRequest>(entity =>
+            {
+                entity.ToTable("EditPostalCodeRequest");
+
+                entity.Property(e => e.PostalCode)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Request)
+                    .WithMany(p => p.EditPostalCodeRequests)
+                    .HasForeignKey(d => d.RequestId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_EditPostalCodeRequest_Request");
             });
 
             modelBuilder.Entity<GuildCategory>(entity =>
@@ -1224,13 +1272,11 @@ namespace Domain.Models
             {
                 entity.ToTable("RequestDetail");
 
-                entity.Property(e => e.Data).IsRequired();
-
                 entity.HasOne(d => d.Request)
                     .WithMany(p => p.RequestDetails)
                     .HasForeignKey(d => d.RequestId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Request_RequestData");
+                    .HasConstraintName("FK_RequestDetail_Request");
             });
 
             modelBuilder.Entity<RequestHistory>(entity =>
