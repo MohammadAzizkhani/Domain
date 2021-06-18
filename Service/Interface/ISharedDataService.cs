@@ -12,6 +12,7 @@ namespace Service.Interface
         Task<List<City>> GetCities(int provinceId);
         Task<List<Province>> GetProvinces();
         Task<List<GuildCategory>> GetGuilds();
+        Task<List<GuildCategory>> GetGuilds(string search);
         Task<List<GuildSubCategory>> GetGuildsSubCategories(int categoryId);
         Task<List<Nationality>> GetNationalities(string search);
         Task<List<Nationality>> GetNationalities();
@@ -20,5 +21,6 @@ namespace Service.Interface
         Task<List<Country>> GetCountries();
         Task<List<Country>> GetCountries(string name);
         Task<List<SharedType>> GetShareTypes();
+        Task<List<RequestState>> GetRequestStates();
     }
 }

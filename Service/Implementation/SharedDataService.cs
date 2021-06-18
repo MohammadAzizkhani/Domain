@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Domain.DbContext;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,14 @@ namespace Service.Implementation
             return await _context.GuildCategories.ToListAsync();
         }
 
+        public async Task<List<GuildCategory>> GetGuilds(string search)
+        {
+            int.TryParse(search, out var code);
+            return await _context.GuildCategories
+                .Where(g => g.CategoryName.StartsWith(search) || g.CategoryCode == code)
+                .ToListAsync();
+        }
+
         public async Task<List<GuildSubCategory>> GetGuildsSubCategories(int categoryId)
         {
             return await _context.GuildSubCategories.Where(c => c.CategoryId == categoryId).ToListAsync();
@@ -40,7 +49,7 @@ namespace Service.Implementation
 
         public async Task<List<Nationality>> GetNationalities(string search)
         {
-            return await _context.Nationalities.Where(x=>x.NationalName.StartsWith(search)).ToListAsync();
+            return await _context.Nationalities.Where(x => x.NationalName.StartsWith(search)).ToListAsync();
         }
 
         public async Task<List<Nationality>> GetNationalities()
@@ -62,12 +71,17 @@ namespace Service.Implementation
 
         public async Task<List<Country>> GetCountries(string name)
         {
-            return await _context.Countries.Where(x=>x.FarsiName.StartsWith(name)).ToListAsync();
+            return await _context.Countries.Where(x => x.FarsiName.StartsWith(name)).ToListAsync();
         }
 
         public async Task<List<SharedType>> GetShareTypes()
         {
             return await _context.SharedTypes.ToListAsync();
+        }
+
+        public async Task<List<RequestState>> GetRequestStates()
+        {
+            return await _context.RequestStates.ToListAsync();
         }
     }
 }

@@ -22,7 +22,8 @@ namespace Api.MappingProfile
             CreateMap<Customer,CustomerDto>()
                 .ForMember(x => x.Email, x => x.MapFrom(x => x.Email))
                 .ForMember(x => x.ShopNameFa, x => x.MapFrom(x => x.ShopNameFa))
-                .ForMember(x => x.Guild, x => x.MapFrom(x => x.Guild.CategoryName));
+                .ForMember(x => x.Guild, x => x.MapFrom(x => x.Guild.CategoryName))
+                .ForMember(x => x.Guild, x => x.MapFrom(x => $"{x.Guild.CategoryName} - {x.Guild.CategoryCode}"));
 
             CreateMap<Merchant, MerchantViewModel>()
                 .ForMember(x => x.StatusTitle, x => x.MapFrom(x => x.Status == (int)MerchantStateEnum.Enable ? MerchantStateEnum.Enable.GetEnumDescription() : MerchantStateEnum.Disable.GetEnumDescription()));

@@ -14,7 +14,7 @@ namespace Api.Controllers
     [ApiController]
     [ApiVersion("1")]
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class SharedDataController : ControllerBase
     {
         private readonly ISharedDataService _sharedDataService;
@@ -45,6 +45,14 @@ namespace Api.Controllers
         public async Task<IActionResult> GetGuilds()
         {
             var data = await _sharedDataService.GetGuilds();
+
+            return Ok(data);
+        }
+
+        [HttpGet("search-guilds")]
+        public async Task<IActionResult> SearchGuilds([FromQuery] string search)
+        {
+            var data = await _sharedDataService.GetGuilds(search);
 
             return Ok(data);
         }
@@ -134,6 +142,51 @@ namespace Api.Controllers
                     sharedTypeCode =(int)ShareTypeEnum.Amount
                 }
             });
+        }
+
+        [HttpGet("request-types")]
+        public IActionResult GetRequestTypes()
+        {
+            return Ok(new List<object>
+            {
+                new
+                {
+                    Id = (byte)RequestTypeEnum.MerchantRegister,
+                    Name = RequestTypeEnum.MerchantRegister.GetEnumDescription()
+                },
+                new
+                {
+                    Id = (byte)RequestTypeEnum.ChangeGuild,
+                    Name = RequestTypeEnum.ChangeGuild.GetEnumDescription()
+                },
+                new
+                {
+                    Id = (byte)RequestTypeEnum.TerminalActivation,
+                    Name = RequestTypeEnum.TerminalActivation.GetEnumDescription()
+                },
+                new
+                {
+                    Id = (byte)RequestTypeEnum.TerminalDeactivation,
+                    Name = RequestTypeEnum.TerminalDeactivation.GetEnumDescription()
+                },
+                new
+                {
+                    Id = (byte)RequestTypeEnum.ChangeIban,
+                    Name = RequestTypeEnum.ChangeIban.GetEnumDescription()
+                },
+                new
+                {
+                    Id = (byte)RequestTypeEnum.ChangePostalCode,
+                    Name = RequestTypeEnum.ChangePostalCode.GetEnumDescription()
+                }
+            });
+        }
+
+        [HttpGet("request-states")]
+        public async Task<IActionResult> GetRequestStates()
+        {
+            var data = await _sharedDataService.GetRequestStates();
+            return Ok(data);
         }
     }
 }

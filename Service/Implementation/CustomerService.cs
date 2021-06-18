@@ -41,7 +41,7 @@ namespace Service.Implementation
 
             if (model.IsLegal.HasValue && model.IsLegal.Value)
             {
-                person = _context.People.FirstOrDefault(x => x.RegisterNo != null && x.RegisterNo == model.RegisterNo);
+                person = _context.People.FirstOrDefault(x => x.NationalLegalCode != null && x.NationalLegalCode == model.RegisterNo);
             }
 
             if (person == null)
@@ -110,7 +110,11 @@ namespace Service.Implementation
             }
             if (!string.IsNullOrEmpty(filter.RegisterNo))
             {
-                query = query.Where(x => x.Person.RegisterNo == filter.RegisterNo);
+                query = query.Where(x => x.Person.NationalLegalCode == filter.RegisterNo);
+            }
+            if (filter.CustomerId.HasValue)
+            {
+                query = query.Where(x => x.Id == filter.CustomerId);
             }
             var count = await query.CountAsync();
 
@@ -292,6 +296,39 @@ namespace Service.Implementation
         {
             var query = _context.Requests.AsQueryable();
 
+            if (!string.IsNullOrEmpty(filter.NationalId))
+            {
+                query = query.Where(x => x.Customer.Person.NationalNumber == filter.NationalId);
+            }
+            if (!string.IsNullOrEmpty(filter.ForeignPervasiveCode))
+            {
+                query = query.Where(x => x.Customer.Person.ForeignPervasiveCode == filter.ForeignPervasiveCode);
+            }
+            if (!string.IsNullOrEmpty(filter.LegalNationalCode))
+            {
+                query = query.Where(x => x.Customer.Person.NationalLegalCode == filter.LegalNationalCode);
+            }
+            if (!string.IsNullOrEmpty(filter.ShopName))
+            {
+                query = query.Where(x => x.Customer.ShopNameFa.StartsWith(filter.ShopName));
+            }
+            if (!string.IsNullOrEmpty(filter.ShopName))
+            {
+                query = query.Where(x => x.Customer.ShopNameFa.StartsWith(filter.ShopName));
+            }
+            if (filter.RequestStates.Any())
+            {
+                query = query.Where(x => filter.RequestStates.Contains(x.RequestStateId.Value));
+            }
+            if (filter.PspId.HasValue)
+            {
+                query = query.Where(x => x.PspId == filter.PspId.Value);
+            }
+            if (filter.RequestType.HasValue)
+            {
+                query = query.Where(x => x.RequestTypeId == (byte)filter.RequestType.Value);
+            }
+
             var count = await query.CountAsync();
 
             query = query.ApplyPaging(filter);
@@ -299,7 +336,7 @@ namespace Service.Implementation
             return new PageCollection<Request>
             {
                 Data = await query.ToListAsync(),
-                Pages = count / filter.PageSize,
+                Pages = (int)Math.Ceiling((double)count / filter.PageSize),
                 TotalRecord = count
             };
         }
