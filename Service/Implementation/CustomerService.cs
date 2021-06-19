@@ -294,7 +294,7 @@ namespace Service.Implementation
 
         public async Task<PageCollection<Request>> GetRequests(RequestFilter filter)
         {
-            var query = _context.Requests.AsQueryable();
+            var query = _context.Requests.Include(c=>c.Customer.Person).AsQueryable();
 
             if (!string.IsNullOrEmpty(filter.NationalId))
             {

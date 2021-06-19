@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Api.Viewmodel;
+using Api.Viewmodel.Request;
 using AutoMapper;
 using Domain.Enums;
 using Domain.Filters;
@@ -16,7 +18,7 @@ namespace Api.Controllers
     [ApiController]
     [ApiVersion("1")]
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CustomerController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -109,12 +111,68 @@ namespace Api.Controllers
             return Ok();
         }
 
-        [HttpGet("requests")]
-        public async Task<IActionResult> GetRequests([FromQuery] RequestFilter filter)
+        [HttpGet("first-registration")]
+        public async Task<IActionResult> GetFirstStepRequests([FromQuery] RequestFilter filter)
         {
+            filter.RequestStates = new List<byte>
+            {
+                (byte) RequestStateEnum.SuccessRegistration
+            };
+
             var data = await _customerService.GetRequests(filter);
 
-            return Ok(data);
+            var result = _mapper.Map<PageCollection<Request>, PageCollection<RequestDto>>(data);
+
+            return Ok(result);
+        }
+
+
+        [HttpGet("sent-to-psp")]
+        public async Task<IActionResult> GetSecondStepRequests([FromQuery] RequestFilter filter)
+        {
+            filter.RequestStates = new List<byte>
+            {
+                (byte) RequestStateEnum.PspPrimaryAccepted,
+                (byte) RequestStateEnum.PspPrimaryFailed,
+                (byte) RequestStateEnum.PspSecondaryFailed,
+            };
+
+            var data = await _customerService.GetRequests(filter);
+            var result = _mapper.Map<PageCollection<Request>, PageCollection<RequestDto>>(data);
+
+            return Ok(result);
+        }
+
+        [HttpGet("shaparak-process")]
+        public async Task<IActionResult> GetThirdStepRequests([FromQuery] RequestFilter filter)
+        {
+            filter.RequestStates = new List<byte>
+            {
+                (byte) RequestStateEnum.PspSecondaryAccepted,
+                (byte) RequestStateEnum.ShaparakBadDataError,
+                (byte) RequestStateEnum.PrimaryShaparakAccepted,
+                (byte) RequestStateEnum.PrimaryShparakFailed,
+                (byte) RequestStateEnum.ShaparakTimeOutError,
+            };
+
+            var data = await _customerService.GetRequests(filter);
+            var result = _mapper.Map<PageCollection<Request>, PageCollection<RequestDto>>(data);
+
+            return Ok(result);
+        }
+
+        [HttpGet("completed-requests")]
+        public async Task<IActionResult> GetFinalStepRequests([FromQuery] RequestFilter filter)
+        {
+            filter.RequestStates = new List<byte>
+            {
+                (byte) RequestStateEnum.SecondaryShparakAccepted
+            };
+
+            var data = await _customerService.GetRequests(filter);
+            var result = _mapper.Map<PageCollection<Request>, PageCollection<RequestDto>>(data);
+
+            return Ok(result);
         }
     }
 }

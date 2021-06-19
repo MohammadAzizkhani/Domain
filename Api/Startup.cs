@@ -1,6 +1,7 @@
 using System;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 using Api.Extenssions;
 using Api.MappingProfile;
 using Api.Service;
@@ -129,6 +130,7 @@ namespace Api
                     cfg.AddProfile<CustomerProfile>();
                     cfg.AddProfile<PersonProfile>();
                     cfg.AddProfile<BaseInfoProfile>();
+                    cfg.AddProfile<RequestProfile>();
                 });
                 return config.CreateMapper();
             });
@@ -142,7 +144,7 @@ namespace Api
             services.AddScoped<IIbanService, IbanService>();
 
             services.AddCors();
-            services.AddControllers();
+            services.AddControllers();//.AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
