@@ -294,7 +294,7 @@ namespace Service.Implementation
 
         public async Task<PageCollection<Request>> GetRequests(RequestFilter filter)
         {
-            var query = _context.Requests.Include(c=>c.Customer.Person).AsQueryable();
+            var query = _context.Requests.Include(c => c.Customer.Person).Include(r=>r.Psp).AsQueryable();
 
             if (!string.IsNullOrEmpty(filter.NationalId))
             {
@@ -364,6 +364,23 @@ namespace Service.Implementation
             if (person == null)
                 throw new MMSPortalException(GeneralException.NotFound.GetEnumDescription());
             return person;
+        }
+
+        public async Task StartEditRequest(long requestId, string userName)
+        {
+            var request = await _context.Requests.FirstOrDefaultAsync(r => r.Id == requestId);
+
+            if (request == null)
+            {
+                throw new MMSPortalException("Not Exist");
+            }
+
+            lock (request)
+            {
+                request.EditedBy = userName;
+                _context.Requests.Update(request);
+                _context.SaveChanges();
+            }
         }
     }
 }

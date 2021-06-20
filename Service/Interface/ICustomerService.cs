@@ -21,5 +21,6 @@ namespace Service.Interface
         Task AddCustomerIbans(List<CustomersIban> ibans);
         Task<PageCollection<Request>> GetRequests(RequestFilter filter);
         Task<Person> GetPerson(PersonType type, string uniqueIdentifier);
+        Task StartEditRequest(long requestId, string userName);
     }
 }

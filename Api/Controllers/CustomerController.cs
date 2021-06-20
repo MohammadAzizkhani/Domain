@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Api.Service;
 using Api.Viewmodel;
 using Api.Viewmodel.Request;
 using AutoMapper;
@@ -23,12 +25,15 @@ namespace Api.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ICustomerService _customerService;
+        private readonly JwtService _jwtService;
 
         public CustomerController(IMapper mapper,
-            ICustomerService customerService)
+            ICustomerService customerService,
+            JwtService jwtService)
         {
             _mapper = mapper;
             _customerService = customerService;
+            _jwtService = jwtService;
         }
 
         [HttpPost("define-acceptor")]
@@ -173,6 +178,18 @@ namespace Api.Controllers
             var result = _mapper.Map<PageCollection<Request>, PageCollection<RequestDto>>(data);
 
             return Ok(result);
+        }
+
+        [HttpPost("start-edit")]
+        public async Task<IActionResult> StartEditRequest([FromBody] long requestId)
+        {
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ")[1];
+
+            var username = _jwtService.GetUsername(token);
+
+            await _customerService.StartEditRequest(requestId, username);
+
+            return Ok();
         }
     }
 }

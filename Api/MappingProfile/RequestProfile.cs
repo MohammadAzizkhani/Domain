@@ -1,6 +1,7 @@
 ﻿using Api.Viewmodel;
 using Api.Viewmodel.Request;
 using AutoMapper;
+using Domain.Enums;
 using Domain.Models;
 using Domain.Utility;
 
@@ -12,7 +13,11 @@ namespace Api.MappingProfile
         {
             CreateMap<Request, RequestDto>()
                 .ForPath(x => x.Customer.Person, c => c.MapFrom(x => x.Customer.Person))
-                .ForPath(x=>x.Customer, c=>c.MapFrom(x=>x.Customer))
+                .ForPath(x => x.Customer, c => c.MapFrom(x => x.Customer))
+                .ForMember(x => x.RequestState,
+                    c => c.MapFrom(x => ((RequestStateEnum)x.RequestStateId.Value).GetEnumDescription()))
+                .ForMember(x => x.Psp, c => c.MapFrom(x => x.Psp.Name))
+                .ForMember(x => x.RequestType, c => c.MapFrom(x => ((RequestTypeEnum)x.RequestTypeId.Value).GetEnumDescription()))
                 ;
 
 

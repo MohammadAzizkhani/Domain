@@ -23,6 +23,7 @@ namespace Api.Service
                     new Claim("Id", user.Id),
                     new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                    new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
                     // the JTI is used for our refresh token which we will be convering 
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 }),
@@ -37,7 +38,7 @@ namespace Api.Service
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var d = jwtTokenHandler.ReadJwtToken(token);
-            return d.Claims.SingleOrDefault(x => x.Type == "email")?.Value;
+            return d.Claims.SingleOrDefault(x => x.Type == "unique_name")?.Value;
         }
     }
 }
