@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Api.Viewmodel;
+using Api.Viewmodel.BaseInfo;
 using Api.Viewmodel.Country;
 using AutoMapper;
 using Domain.Filters;
@@ -40,14 +41,16 @@ namespace Api.Controllers
 
         }
 
-        //[HttpPost("add-psp")]
-        //public async Task<IActionResult> GetPsps()
-        //{
-            
+        [HttpPost("add-psp")]
+        public async Task<IActionResult> AddPsp([FromBody]AddPspViewModel model)
+        {
+            var obj = _mapper.Map<AddPspViewModel, Psp>(model);
 
-        //    return Ok();
+            await _baseInfoService.AddPsp(obj);
 
-        //}
+            return Ok();
+
+        }
 
         [HttpGet("projects")]
         public async Task<IActionResult> GetProjects()

@@ -16,6 +16,7 @@ namespace Service.Interface
         Task<PageCollection<City>> GetCities(CityFilter filter);
 
         Task<List<Psp>> GetPsps();
+        Task AddPsp(Psp psp);
         Task<List<Contract>> GetContracts();
         Task<List<Project>> GetProjects();
         Task<List<MarketerContract>> GetMarketContract();

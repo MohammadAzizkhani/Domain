@@ -1,4 +1,5 @@
-﻿using Api.Viewmodel.Country;
+﻿using Api.Viewmodel.BaseInfo;
+using Api.Viewmodel.Country;
 using AutoMapper;
 using Domain.Models;
 
@@ -10,6 +11,7 @@ namespace Api.MappingProfile
         {
             CreateMap<AddCountryViewModel, Country>();
             CreateMap<EditCountryViewModel, Country>();
+            CreateMap<AddPspViewModel, Psp>();
         }
     }
 }

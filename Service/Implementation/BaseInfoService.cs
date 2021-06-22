@@ -104,6 +104,12 @@ namespace Service.Implementation
             return await _context.Psps.ToListAsync();
         }
 
+        public async Task AddPsp(Psp psp)
+        {
+            await _context.Psps.AddAsync(psp);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<List<Contract>> GetContracts()
         {
             return await _context.Contracts.ToListAsync();
