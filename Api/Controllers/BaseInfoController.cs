@@ -35,7 +35,7 @@ namespace Api.Controllers
         [HttpGet("psps")]
         public async Task<IActionResult> GetPsps()
         {
-            var data = await _sharedDataService.GetGuilds();
+            var data = await _baseInfoService.GetPsps();
 
             return Ok(data);
 
@@ -51,6 +51,24 @@ namespace Api.Controllers
             return Ok();
 
         }
+
+        [HttpPut("edit-psp")]
+        public async Task<IActionResult> EditPsp([FromBody] EditPspViewModel model)
+        {
+            var obj = _mapper.Map<EditPspViewModel, Psp>(model);
+
+            await _baseInfoService.EditPsp(obj);
+
+            return Ok();
+        }
+
+        //[HttpDelete("remove-psp")]
+        //public async Task<IActionResult> RemovePsp(int id)
+        //{
+        //    await _baseInfoService.(id);
+
+        //    return Ok();
+        //}
 
         [HttpGet("projects")]
         public async Task<IActionResult> GetProjects()

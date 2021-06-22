@@ -110,6 +110,45 @@ namespace Service.Implementation
             await _context.SaveChangesAsync();
         }
 
+        public async Task EditPsp(Psp psp)
+        {
+            var dbObject = await _context.Psps.FirstOrDefaultAsync(x => x.Id == psp.Id);
+
+            if (dbObject == null)
+                throw new MMSPortalException(GeneralException.NotFound.GetEnumDescription());
+
+            dbObject.UserShaparak = psp.UserShaparak;
+            dbObject.PasswordShaparak = psp.PasswordShaparak;
+            dbObject.PspMmsUsername = psp.PspMmsUsername;
+            dbObject.Name = psp.Name;
+            dbObject.PspMmsPassword = psp.PspMmsPassword;
+            dbObject.PspMmsPublicKey = psp.PspMmsPublicKey;
+            dbObject.PspMmsPrivateKey = psp.PspMmsPrivateKey;
+            dbObject.ShaparakFtpPublicKey = psp.ShaparakFtpPublicKey;
+            dbObject.ShaparakFtpPrivateKey = psp.ShaparakFtpPrivateKey;
+            dbObject.Alias = psp.Alias;
+            dbObject.ShaparakFtpUsername = psp.ShaparakFtpUsername;
+            dbObject.ShaparakFtpPassword = psp.ShaparakFtpPassword;
+            dbObject.Iin = psp.Iin;
+            dbObject.TerminalNo = psp.TerminalNo;
+            dbObject.AcceptorCode = psp.AcceptorCode;
+
+
+            _context.Psps.Update(dbObject);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeletePsp(int id)
+        {
+            var dbObject = await _context.Psps.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (dbObject == null)
+                throw new MMSPortalException(GeneralException.NotFound.GetEnumDescription());
+
+            _context.Psps.Remove(dbObject);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<List<Contract>> GetContracts()
         {
             return await _context.Contracts.ToListAsync();

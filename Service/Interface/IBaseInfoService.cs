@@ -17,6 +17,8 @@ namespace Service.Interface
 
         Task<List<Psp>> GetPsps();
         Task AddPsp(Psp psp);
+        Task EditPsp(Psp psp);
+        Task DeletePsp(int id);
         Task<List<Contract>> GetContracts();
         Task<List<Project>> GetProjects();
         Task<List<MarketerContract>> GetMarketContract();

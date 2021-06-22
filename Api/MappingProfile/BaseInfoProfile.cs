@@ -12,6 +12,7 @@ namespace Api.MappingProfile
             CreateMap<AddCountryViewModel, Country>();
             CreateMap<EditCountryViewModel, Country>();
             CreateMap<AddPspViewModel, Psp>();
+            CreateMap<EditPspViewModel, Psp>();
         }
     }
 }
