@@ -21,6 +21,8 @@ namespace Service.Interface
         Task DeletePsp(int id);
         Task<List<Contract>> GetContracts();
         Task<List<Project>> GetProjects();
+        Task AddProject(Project project);
+        Task EditProject(Project project);
         Task<List<MarketerContract>> GetMarketContract();
 
 

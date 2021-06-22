@@ -159,6 +159,29 @@ namespace Service.Implementation
             return await _context.Projects.ToListAsync();
         }
 
+        public async Task AddProject(Project project)
+        {
+            await _context.Projects.AddAsync(project);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task EditProject(Project project)
+        {
+            var dbObject = await _context.Projects.FirstOrDefaultAsync(x => x.Id == project.Id);
+
+            if (dbObject == null)
+                throw new MMSPortalException(GeneralException.NotFound.GetEnumDescription());
+
+            dbObject.ShareType = project.ShareType;
+            dbObject.ProjectName = project.ProjectName;
+            dbObject.ShareAmountMax = project.ShareAmountMax;
+            dbObject.ShareAmountMin = project.ShareAmountMin;
+            dbObject.SharedAmount = project.SharedAmount;
+
+            _context.Projects.Update(dbObject);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<List<MarketerContract>> GetMarketContract()
         {
             return await _context.MarketerContracts.ToListAsync();

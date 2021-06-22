@@ -79,6 +79,28 @@ namespace Api.Controllers
 
         }
 
+        [HttpPost("add-project")]
+        public async Task<IActionResult> AddProject([FromBody] AddProjectViewModel model)
+        {
+            var obj = _mapper.Map<AddProjectViewModel, Project>(model);
+
+            await _baseInfoService.AddProject(obj);
+
+            return Ok();
+
+        }
+
+        [HttpPut("edit-project")]
+        public async Task<IActionResult> EditProject([FromBody] EditProjectViewModel model)
+        {
+            var obj = _mapper.Map<EditProjectViewModel, Project>(model);
+
+            await _baseInfoService.EditProject(obj);
+
+            return Ok();
+
+        }
+
         [HttpGet("guilds")]
         public async Task<IActionResult> GetGuilds([FromQuery] BaseFilter filter)
         {
