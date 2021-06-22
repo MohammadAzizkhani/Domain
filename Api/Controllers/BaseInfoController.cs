@@ -20,28 +20,32 @@ namespace Api.Controllers
     {
         private readonly IBaseInfoService _baseInfoService;
         private readonly IMapper _mapper;
+        private readonly ISharedDataService _sharedDataService;
 
-        public BaseInfoController(IBaseInfoService baseInfoService, IMapper mapper)
+        public BaseInfoController(IBaseInfoService baseInfoService,
+            IMapper mapper,
+            ISharedDataService sharedDataService)
         {
             _baseInfoService = baseInfoService;
             _mapper = mapper;
+            _sharedDataService = sharedDataService;
         }
 
         [HttpGet("psps")]
         public async Task<IActionResult> GetPsps()
         {
-            var data = await _baseInfoService.GetPsps();
+            var data = await _sharedDataService.GetGuilds();
 
             return Ok(data);
 
         }
 
-        //[HttpGet("add-psp")]
+        //[HttpPost("add-psp")]
         //public async Task<IActionResult> GetPsps()
         //{
-        //    var data = await _baseInfoService.GetPsps();
+            
 
-        //    return Ok(data);
+        //    return Ok();
 
         //}
 
@@ -55,9 +59,9 @@ namespace Api.Controllers
         }
 
         [HttpGet("guilds")]
-        public async Task<IActionResult> GetGuilds()
+        public async Task<IActionResult> GetGuilds([FromQuery] BaseFilter filter)
         {
-            var data = await _baseInfoService.GetContracts();
+            var data = await _sharedDataService.GetGuildsCollection(filter);
 
             return Ok(data);
 

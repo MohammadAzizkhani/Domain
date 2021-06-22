@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Filters;
 using Domain.Models;
+using Domain.Utility;
 
 namespace Service.Interface
 {
@@ -11,7 +13,8 @@ namespace Service.Interface
     {
         Task<List<City>> GetCities(int provinceId);
         Task<List<Province>> GetProvinces();
-        Task<List<GuildCategory>> GetGuilds();
+        Task<List<GuildCategory>> GetGuilds(); 
+        Task<PageCollection<GuildCategory>> GetGuildsCollection(BaseFilter filter);
         Task<List<GuildCategory>> GetGuilds(string search);
         Task<List<GuildSubCategory>> GetGuildsSubCategories(int categoryId);
         Task<List<Nationality>> GetNationalities(string search);

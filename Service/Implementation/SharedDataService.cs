@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Domain.DbContext;
+using Domain.Filters;
 using Domain.Models;
+using Domain.Utility;
 using Microsoft.EntityFrameworkCore;
 using Service.Interface;
 
@@ -32,6 +34,22 @@ namespace Service.Implementation
         public async Task<List<GuildCategory>> GetGuilds()
         {
             return await _context.GuildCategories.ToListAsync();
+        }
+
+        public async Task<PageCollection<GuildCategory>> GetGuildsCollection(BaseFilter filter)
+        {
+            var query = _context.GuildCategories.AsQueryable();
+
+            var count = await query.CountAsync();
+
+            query = query.ApplyPaging(filter);
+
+            return new PageCollection<GuildCategory>
+            {
+                Data = await query.ToListAsync(),
+                Pages = (int)Math.Ceiling((double)count / filter.PageSize),
+                TotalRecord = count
+            };
         }
 
         public async Task<List<GuildCategory>> GetGuilds(string search)
