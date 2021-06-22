@@ -3,6 +3,7 @@ using Api.Viewmodel.Country;
 using AutoMapper;
 using Domain.Enums;
 using Domain.Models;
+using Domain.Utility;
 
 namespace Api.MappingProfile
 {
@@ -17,6 +18,9 @@ namespace Api.MappingProfile
             CreateMap<AddProjectViewModel, Project>().ForMember(x => x.ShareType, x => x.MapFrom(c => c.ShareType == ShareTypeEnum.Percentage ? "1" : "static"));
 
             CreateMap<EditProjectViewModel, Project>().ForMember(x => x.ShareType, x => x.MapFrom(c => c.ShareType == ShareTypeEnum.Percentage ? "1" : "static"));
+
+            CreateMap<Project, ProjectDto>().ForMember(x => x.ShareType, c => c.MapFrom(x => x.ShareType == "1" ? ShareTypeEnum.Percentage.GetEnumDescription() : x.ShareType == "static" ? ShareTypeEnum.Amount.GetEnumDescription() : ""))
+                ;
         }
     }
 }

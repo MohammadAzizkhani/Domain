@@ -191,5 +191,12 @@ namespace Api.Controllers
 
             return Ok();
         }
+
+        [HttpPut("edit-request")]
+        public async Task<IActionResult> EditRequest([FromBody] string s)
+        {
+
+            return Ok();
+        }
     }
 }

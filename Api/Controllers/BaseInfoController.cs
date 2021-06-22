@@ -42,7 +42,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("add-psp")]
-        public async Task<IActionResult> AddPsp([FromBody]AddPspViewModel model)
+        public async Task<IActionResult> AddPsp([FromBody] AddPspViewModel model)
         {
             var obj = _mapper.Map<AddPspViewModel, Psp>(model);
 
@@ -75,8 +75,9 @@ namespace Api.Controllers
         {
             var data = await _baseInfoService.GetProjects();
 
-            return Ok(data);
+            var result = _mapper.Map<List<Project>, List<ProjectDto>>(data);
 
+            return Ok(result);
         }
 
         [HttpPost("add-project")]
