@@ -19,8 +19,10 @@ namespace Api.MappingProfile
 
             CreateMap<EditProjectViewModel, Project>().ForMember(x => x.ShareType, x => x.MapFrom(c => c.ShareType == ShareTypeEnum.Percentage ? "1" : "static"));
 
-            CreateMap<Project, ProjectDto>().ForMember(x => x.ShareType, c => c.MapFrom(x => x.ShareType == "1" ? ShareTypeEnum.Percentage.GetEnumDescription() : x.ShareType == "static" ? ShareTypeEnum.Amount.GetEnumDescription() : ""))
-                ;
+            CreateMap<Project, ProjectDto>().ForMember(x => x.ShareTypeTitle, c => c.MapFrom(x => x.ShareType == "1" ? ShareTypeEnum.Percentage.GetEnumDescription() : x.ShareType == "static" ? ShareTypeEnum.Amount.GetEnumDescription() : ""))
+
+                .ForMember(x => x.ShareTypeEnum, x => x.MapFrom(c => c.ShareType == "1" ? ShareTypeEnum.Percentage : ShareTypeEnum.Amount));
+            ;
         }
     }
 }
