@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;
 using Service.Interface;
+using Service.ViewModel;
 
 namespace Service.Implementation
 {
@@ -294,7 +295,7 @@ namespace Service.Implementation
 
         public async Task<PageCollection<Request>> GetRequests(RequestFilter filter)
         {
-            var query = _context.Requests.Include(c => c.Customer.Person).Include(r=>r.Psp).AsQueryable();
+            var query = _context.Requests.Where(r => !r.IsDeleted).Include(c => c.Customer.Person).Include(r => r.Psp).AsQueryable();
 
             if (!string.IsNullOrEmpty(filter.NationalId))
             {
@@ -380,6 +381,90 @@ namespace Service.Implementation
                 request.EditedBy = userName;
                 _context.Requests.Update(request);
                 _context.SaveChanges();
+            }
+        }
+
+        public async Task EditRequest(EditRequestViewModel model)
+        {
+            var request = await _context.Requests.Include(x => x.Customer.Person).Include(x => x.Customer.CustomersIbans).FirstOrDefaultAsync(r => r.Id == model.Id);
+
+            if (request == null)
+            {
+                throw new MMSPortalException("Not Exist");
+            }
+
+            if (!string.IsNullOrEmpty(request.EditedBy))
+            {
+                throw new MMSPortalException("در حال ویرایش توسط کاربری دیگر است");
+            }
+
+            if (request.RequestTypeId == (int)RequestTypeEnum.MerchantRegister)
+            {
+
+                var requestHistory = new RequestHistory
+                {
+                    RequestState = request.RequestStateId,
+                    TrackingNumber = request.TrackingNumber,
+                    InsertDateTime = request.InsertDateTime,
+                    ShaparakDescription = request.ShaparakDescription,
+                    ShaparakState = request.ShaparakState,
+                    ShaparakTrackingNumber = request.ShaparakTrackingNumber,
+                    RequestId = request.Id
+                };
+                await _context.RequestHistories.AddAsync(requestHistory);
+
+
+                request.Customer.GuildId = model.GuildId;
+                request.Customer.ShopPostalCode = model.ShopPostalCode;
+                request.Customer.TaxPayerCode = model.TaxPayerCode;
+                request.Customer.Person.FirstNameFa = model.FirstNameFa;
+                request.Customer.Person.LastNameFa = model.LastNameFa;
+                request.Customer.RedirectUrl = model.RedirectUrl;
+                request.Customer.ShopCityPreCode = model.ShopCityPreCode;
+                request.Customer.ShopTelephoneNumber = model.ShopTelephoneNumber;
+
+                request.RequestStateId = GetRequestPrevioseState(request.RequestStateId);
+
+                request.EditedBy = null;
+
+                _context.Requests.Update(request);
+                await _context.SaveChangesAsync();
+            }
+
+        }
+
+        public async Task RemoveRequest(long id)
+        {
+            var request = await _context.Requests.FirstOrDefaultAsync(r => r.Id == id);
+
+            if (request == null)
+            {
+                throw new MMSPortalException("Not Exist");
+            }
+
+            request.IsDeleted = true;
+            _context.Requests.Update(request);
+            await _context.SaveChangesAsync();
+        }
+
+        private byte GetRequestPrevioseState(byte? stateId)
+        {
+            switch (stateId)
+            {
+                case (byte)RequestStateEnum.PspPrimaryFailed:
+                    return (byte)RequestStateEnum.SuccessRegistration;
+                case (byte)RequestStateEnum.PspSecondaryFailed:
+                    return (byte)RequestStateEnum.SuccessRegistration;
+                case (byte)RequestStateEnum.PrimaryShparakFailed:
+                    return (byte)RequestStateEnum.PspSecondaryAccepted;
+                case (byte)RequestStateEnum.ShaparakTimeOutError:
+                    return (byte)RequestStateEnum.PspSecondaryAccepted;
+                case (byte)RequestStateEnum.ShaparakBadDataError:
+                    return (byte)RequestStateEnum.PspSecondaryAccepted;
+                case (byte)RequestStateEnum.SecondaryShparakFailed:
+                    return (byte)RequestStateEnum.PspSecondaryAccepted;
+                default:
+                    return (byte)RequestStateEnum.SuccessRegistration;
             }
         }
     }

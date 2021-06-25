@@ -14,6 +14,7 @@ using Domain.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Service.Interface;
+using Service.ViewModel;
 
 namespace Api.Controllers
 {
@@ -193,9 +194,18 @@ namespace Api.Controllers
         }
 
         [HttpPut("edit-request")]
-        public async Task<IActionResult> EditRequest([FromBody] string s)
+        public async Task<IActionResult> EditRequest([FromBody] EditRequestViewModel vm)
         {
-            
+            await _customerService.EditRequest(vm);
+
+            return Ok();
+        }
+
+        [HttpDelete("remove-request")]
+        public async Task<IActionResult> RemoveRequest(long id)
+        {
+            await _customerService.RemoveRequest(id);
+
             return Ok();
         }
     }

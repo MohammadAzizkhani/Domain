@@ -33,6 +33,7 @@ namespace Domain.Models
         public DateTime? InsertDateTime { get; set; }
         public string RequestData { get; set; }
         public string EditedBy { get; set; }
+        public bool IsDeleted { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Psp Psp { get; set; }

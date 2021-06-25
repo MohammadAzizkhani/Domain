@@ -4,6 +4,7 @@ using Domain.Enums;
 using Domain.Filters;
 using Domain.Models;
 using Domain.Utility;
+using Service.ViewModel;
 
 namespace Service.Interface
 {
@@ -22,5 +23,8 @@ namespace Service.Interface
         Task<PageCollection<Request>> GetRequests(RequestFilter filter);
         Task<Person> GetPerson(PersonType type, string uniqueIdentifier);
         Task StartEditRequest(long requestId, string userName);
+
+        Task EditRequest(EditRequestViewModel model);
+        Task RemoveRequest(long id);
     }
 }
