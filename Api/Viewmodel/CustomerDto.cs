@@ -32,6 +32,7 @@ namespace Api.Viewmodel
         public string ProvinceAbbreviation { get; set; }
         public string CountryAbbreviation { get; set; }
         public string TaxPayerCode { get; set; }
+        public string CustomerKey { get; set; }
 
         public ICollection<IbanDto> Ibans { get; set; }
         public PersonDto Person { get; set; }

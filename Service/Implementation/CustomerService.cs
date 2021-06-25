@@ -54,7 +54,8 @@ namespace Service.Implementation
                     InsertDateTime = DateTime.Now,
                     RequestTypeId = (byte)RequestTypeEnum.MerchantRegister,
                     TrackingNumber = Guid.NewGuid(),
-                    PspId = x.Id
+                    PspId = x.Id,
+                    RequestStateId = (byte)RequestStateEnum.SuccessRegistration
                 }).ToList();
                 model.Customers.First().Requests = requests;
                 await _context.People.AddAsync(model);
@@ -146,6 +147,7 @@ namespace Service.Implementation
                 RequestTypeId = (byte)RequestTypeEnum.ChangeGuild,
                 TrackingNumber = Guid.NewGuid(),
                 PspId = x.Id,
+                RequestStateId = (byte)RequestStateEnum.SuccessRegistration,
                 EditGuildRequests = new List<EditGuildRequest>
                 {
                     new()
@@ -172,6 +174,7 @@ namespace Service.Implementation
                 RequestTypeId = (byte)RequestTypeEnum.ChangePostalCode,
                 TrackingNumber = Guid.NewGuid(),
                 PspId = x.Id,
+                RequestStateId = (byte)RequestStateEnum.SuccessRegistration,
                 EditPostalCodeRequests = new List<EditPostalCodeRequest>
                 {
                     new()
@@ -196,6 +199,7 @@ namespace Service.Implementation
                 InsertDateTime = DateTime.Now,
                 RequestTypeId = (byte)RequestTypeEnum.TerminalActivation,
                 TrackingNumber = Guid.NewGuid(),
+                RequestStateId = (byte)RequestStateEnum.SuccessRegistration,
                 PspId = x.Id
             }).ToList();
 
@@ -214,7 +218,8 @@ namespace Service.Implementation
                 InsertDateTime = DateTime.Now,
                 RequestTypeId = (byte)RequestTypeEnum.TerminalDeactivation,
                 TrackingNumber = Guid.NewGuid(),
-                PspId = x.Id
+                PspId = x.Id,
+                RequestStateId = (byte)RequestStateEnum.SuccessRegistration
             }).ToList();
 
             await _context.Requests.AddRangeAsync(requests);
@@ -240,6 +245,7 @@ namespace Service.Implementation
                 RequestTypeId = (byte)RequestTypeEnum.ChangeIban,
                 TrackingNumber = Guid.NewGuid(),
                 PspId = x.Id,
+                RequestStateId = (byte)RequestStateEnum.SuccessRegistration,
                 EditIbanRequests = ibans.Select(x => new EditIbanRequest
                 {
                     Iban = x.Iban
