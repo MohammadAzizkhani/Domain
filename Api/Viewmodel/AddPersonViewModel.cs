@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,8 +30,11 @@ namespace Api.Viewmodel
         public bool? IsLegal { get; set; }
         public bool IsForeign { get; set; }
         public string RegisterDate { get; set; }
+        [MaxLength(15)]
         public string RegisterNo { get; set; }
+        [MaxLength(100)]
         public string ComNameEn { get; set; }
+        [MaxLength(100)]
         public string ComNameFa { get; set; }
         public bool? RsidencyType { get; set; }
         public bool? VitalStatus { get; set; }
@@ -39,6 +43,7 @@ namespace Api.Viewmodel
         public string ForeignPervasiveCode { get; set; }
         public string PassportNo { get; set; }
         public string PassportExpireDate { get; set; }
+        [MaxLength(10)]
         public string CommercialCode { get; set; }
         public AddCustomerViewModel Customer { get; set; }
 

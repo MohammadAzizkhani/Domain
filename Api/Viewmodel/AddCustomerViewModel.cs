@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain.Models;
@@ -33,6 +34,8 @@ namespace Api.Viewmodel
         public string ProvinceAbbreviation { get; set; }
         public string CountryAbbreviation { get; set; }
         public int CityCode { get; set; }
+
+        [MaxLength(10)]
         public string TaxPayerCode { get; set; }
         public List<AddIbanViewModel> Ibans { get; set; }
         public ContractViewModel Contract { get; set; }

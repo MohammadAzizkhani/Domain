@@ -24,7 +24,7 @@ namespace Service.Interface
         Task<Person> GetPerson(PersonType type, string uniqueIdentifier);
         Task StartEditRequest(long requestId, string userName);
 
-        Task EditRequest(EditRequestViewModel model);
+        Task EditRequest(EditRequestViewModel model, string username);
         Task RemoveRequest(long id);
     }
 }

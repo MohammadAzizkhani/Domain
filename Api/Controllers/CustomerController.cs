@@ -196,7 +196,11 @@ namespace Api.Controllers
         [HttpPut("edit-request")]
         public async Task<IActionResult> EditRequest([FromBody] EditRequestViewModel vm)
         {
-            await _customerService.EditRequest(vm);
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ")[1];
+
+            var username = _jwtService.GetUsername(token);
+
+            await _customerService.EditRequest(vm, username);
 
             return Ok();
         }

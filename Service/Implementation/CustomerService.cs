@@ -30,17 +30,18 @@ namespace Service.Implementation
         {
             Person person = null;
 
-            if (model.IsLegal.HasValue && !model.IsLegal.Value)
+            if (!string.IsNullOrEmpty(model.NationalNumber))
             {
                 person = _context.People.FirstOrDefault(x => x.NationalNumber != null && x.NationalNumber == model.NationalNumber);
             }
 
-            if (model.IsForeign.HasValue && model.IsForeign.Value)
+            if (!string.IsNullOrEmpty(model.ForeignPervasiveCode))
             {
                 person = _context.People.FirstOrDefault(x => x.ForeignPervasiveCode != null && x.ForeignPervasiveCode == model.ForeignPervasiveCode);
+                model.NationalNumber = string.Empty;
             }
 
-            if (model.IsLegal.HasValue && model.IsLegal.Value)
+            if (!string.IsNullOrEmpty(model.NationalLegalCode) && !string.IsNullOrEmpty(model.NationalNumber))
             {
                 person = _context.People.FirstOrDefault(x => x.NationalLegalCode != null && x.NationalLegalCode == model.RegisterNo);
             }
@@ -62,12 +63,12 @@ namespace Service.Implementation
             }
 
 
-            var inputPostalCode = model.Customers.First().ShopPostalCode;
-            var inputGuildId = model.Customers.First().GuildId;
-            if (person.Customers.Any(x => x.ShopPostalCode == inputPostalCode && x.GuildId == inputGuildId))
-            {
-                throw new MMSPortalException(CreateCustomerException.AlreadyExist.GetEnumDescription());
-            }
+            //var inputPostalCode = model.Customers.First().ShopPostalCode;
+            //var inputGuildId = model.Customers.First().GuildId;
+            //if (person.Customers.Any(x => x.ShopPostalCode == inputPostalCode && x.GuildId == inputGuildId))
+            //{
+            //    throw new MMSPortalException(CreateCustomerException.AlreadyExist.GetEnumDescription());
+            //}
 
             var inputCustomer = model.Customers.First();
             inputCustomer.PersonId = person.Id;
@@ -384,7 +385,7 @@ namespace Service.Implementation
             }
         }
 
-        public async Task EditRequest(EditRequestViewModel model)
+        public async Task EditRequest(EditRequestViewModel model, string username)
         {
             var request = await _context.Requests.Include(x => x.Customer.Person).Include(x => x.Customer.CustomersIbans).FirstOrDefaultAsync(r => r.Id == model.Id);
 
@@ -393,43 +394,39 @@ namespace Service.Implementation
                 throw new MMSPortalException("Not Exist");
             }
 
-            if (!string.IsNullOrEmpty(request.EditedBy))
+            if (request.EditedBy != username)
             {
                 throw new MMSPortalException("در حال ویرایش توسط کاربری دیگر است");
             }
 
-            if (request.RequestTypeId == (int)RequestTypeEnum.MerchantRegister)
+            var requestHistory = new RequestHistory
             {
-
-                var requestHistory = new RequestHistory
-                {
-                    RequestState = request.RequestStateId,
-                    TrackingNumber = request.TrackingNumber,
-                    InsertDateTime = request.InsertDateTime,
-                    ShaparakDescription = request.ShaparakDescription,
-                    ShaparakState = request.ShaparakState,
-                    ShaparakTrackingNumber = request.ShaparakTrackingNumber,
-                    RequestId = request.Id
-                };
-                await _context.RequestHistories.AddAsync(requestHistory);
+                RequestState = request.RequestStateId,
+                TrackingNumber = request.TrackingNumber,
+                InsertDateTime = request.InsertDateTime,
+                ShaparakDescription = request.ShaparakDescription,
+                ShaparakState = request.ShaparakState,
+                ShaparakTrackingNumber = request.ShaparakTrackingNumber,
+                RequestId = request.Id
+            };
+            await _context.RequestHistories.AddAsync(requestHistory);
 
 
-                request.Customer.GuildId = model.GuildId;
-                request.Customer.ShopPostalCode = model.ShopPostalCode;
-                request.Customer.TaxPayerCode = model.TaxPayerCode;
-                request.Customer.Person.FirstNameFa = model.FirstNameFa;
-                request.Customer.Person.LastNameFa = model.LastNameFa;
-                request.Customer.RedirectUrl = model.RedirectUrl;
-                request.Customer.ShopCityPreCode = model.ShopCityPreCode;
-                request.Customer.ShopTelephoneNumber = model.ShopTelephoneNumber;
+            request.Customer.GuildId = model.GuildId;
+            request.Customer.ShopPostalCode = model.ShopPostalCode;
+            request.Customer.TaxPayerCode = model.TaxPayerCode;
+            request.Customer.Person.FirstNameFa = model.FirstNameFa;
+            request.Customer.Person.LastNameFa = model.LastNameFa;
+            request.Customer.RedirectUrl = model.RedirectUrl;
+            request.Customer.ShopCityPreCode = model.ShopCityPreCode;
+            request.Customer.ShopTelephoneNumber = model.ShopTelephoneNumber;
 
-                request.RequestStateId = GetRequestPrevioseState(request.RequestStateId);
+            request.RequestStateId = GetRequestPrevioseState(request.RequestStateId);
 
-                request.EditedBy = null;
+            request.EditedBy = null;
 
-                _context.Requests.Update(request);
-                await _context.SaveChangesAsync();
-            }
+            _context.Requests.Update(request);
+            await _context.SaveChangesAsync();
 
         }
 
