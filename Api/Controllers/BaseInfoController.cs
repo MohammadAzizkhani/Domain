@@ -16,7 +16,7 @@ namespace Api.Controllers
     [ApiController]
     [ApiVersion("1")]
     [Route("api/[controller]")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BaseInfoController : ControllerBase
     {
         private readonly IBaseInfoService _baseInfoService;

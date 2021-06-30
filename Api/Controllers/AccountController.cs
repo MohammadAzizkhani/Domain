@@ -19,7 +19,7 @@ namespace Api.Controllers
     [ApiController]
     [ApiVersion("1")]
     [Route("api/[controller]")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<CustomIdentityUser> _userManager;
