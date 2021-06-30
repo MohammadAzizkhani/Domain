@@ -1017,10 +1017,10 @@ namespace Domain.Models
                 entity.Property(e => e.BirthLocation).HasMaxLength(100);
 
                 entity.Property(e => e.ComNameEn)
-                    .HasMaxLength(30)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.ComNameFa).HasMaxLength(30);
+                entity.Property(e => e.ComNameFa).HasMaxLength(100);
 
                 entity.Property(e => e.CommercialCode)
                     .HasMaxLength(10)

@@ -18,6 +18,7 @@ namespace Domain.Models
         public double? SharedAmount { get; set; }
         public long? ShareAmountMax { get; set; }
         public long? ShareAmountMin { get; set; }
+        public bool IsDeleted { get; set; }
 
         public virtual ICollection<Contract> Contracts { get; set; }
     }

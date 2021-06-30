@@ -106,6 +106,11 @@ namespace Service.Implementation
 
         public async Task AddPsp(Psp psp)
         {
+            var pspObj = await _context.Psps.FirstOrDefaultAsync(x => x.Alias == psp.Alias);
+            if (pspObj != null)
+            {
+                throw new MMSPortalException(GeneralException.AlreadyExist.GetEnumDescription());
+            }
             await _context.Psps.AddAsync(psp);
             await _context.SaveChangesAsync();
         }
@@ -145,7 +150,9 @@ namespace Service.Implementation
             if (dbObject == null)
                 throw new MMSPortalException(GeneralException.NotFound.GetEnumDescription());
 
-            _context.Psps.Remove(dbObject);
+            dbObject.Enabled = false;
+
+            _context.Psps.Update(dbObject);
             await _context.SaveChangesAsync();
         }
 
@@ -156,7 +163,7 @@ namespace Service.Implementation
 
         public async Task<List<Project>> GetProjects()
         {
-            return await _context.Projects.ToListAsync();
+            return await _context.Projects.Where(p => !p.IsDeleted).ToListAsync();
         }
 
         public async Task AddProject(Project project)
@@ -177,6 +184,19 @@ namespace Service.Implementation
             dbObject.ShareAmountMax = project.ShareAmountMax;
             dbObject.ShareAmountMin = project.ShareAmountMin;
             dbObject.SharedAmount = project.SharedAmount;
+
+            _context.Projects.Update(dbObject);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteProject(int id)
+        {
+            var dbObject = await _context.Projects.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (dbObject == null)
+                throw new MMSPortalException(GeneralException.NotFound.GetEnumDescription());
+
+            dbObject.IsDeleted = true;
 
             _context.Projects.Update(dbObject);
             await _context.SaveChangesAsync();

@@ -62,13 +62,12 @@ namespace Api.Controllers
             return Ok();
         }
 
-        //[HttpDelete("remove-psp")]
-        //public async Task<IActionResult> RemovePsp(int id)
-        //{
-        //    await _baseInfoService.(id);
-
-        //    return Ok();
-        //}
+        [HttpDelete("remove-psp")]
+        public async Task<IActionResult> RemovePsp(int id)
+        {
+            await _baseInfoService.DeletePsp(id);
+            return Ok();
+        }
 
         [HttpGet("projects")]
         public async Task<IActionResult> GetProjects()
@@ -100,6 +99,13 @@ namespace Api.Controllers
 
             return Ok();
 
+        }
+
+        [HttpDelete("remove-project")]
+        public async Task<IActionResult> RemoveProject(int id)
+        {
+            await _baseInfoService.DeleteProject(id);
+            return Ok();
         }
 
         [HttpGet("guilds")]

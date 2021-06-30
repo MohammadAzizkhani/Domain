@@ -48,7 +48,7 @@ namespace Service.Implementation
 
             if (person == null)
             {
-                var pspList = await _context.Psps.ToListAsync();
+                var pspList = await GetActivePsps();
                 var requests = pspList.Select(x => new Request
                 {
                     InsertDateTime = DateTime.Now,
@@ -138,7 +138,7 @@ namespace Service.Implementation
 
         public async Task EditGuild(long customerId, int guildId)
         {
-            var pspList = await _context.Psps.ToListAsync();
+            var pspList = await GetActivePsps();
 
             var requests = pspList.Select(x => new Request
             {
@@ -165,7 +165,7 @@ namespace Service.Implementation
 
         public async Task EditPostalCode(long customerId, string postalCode)
         {
-            var pspList = await _context.Psps.ToListAsync();
+            var pspList = await GetActivePsps();
 
             var requests = pspList.Select(x => new Request
             {
@@ -191,7 +191,7 @@ namespace Service.Implementation
 
         public async Task ActivateTerminals(long customerId)
         {
-            var pspList = await _context.Psps.ToListAsync();
+            var pspList = await GetActivePsps();
 
             var requests = pspList.Select(x => new Request
             {
@@ -210,7 +210,7 @@ namespace Service.Implementation
 
         public async Task DeactivateTerminals(long customerId)
         {
-            var pspList = await _context.Psps.ToListAsync();
+            var pspList = await GetActivePsps();
 
             var requests = pspList.Select(x => new Request
             {
@@ -234,7 +234,7 @@ namespace Service.Implementation
 
         public async Task EditCustomerIbans(List<CustomersIban> ibans)
         {
-            var pspList = await _context.Psps.ToListAsync();
+            var pspList = await GetActivePsps();
 
             var customerId = ibans.FirstOrDefault()?.CustomerId;
 
@@ -260,7 +260,7 @@ namespace Service.Implementation
 
         public async Task<Customer> AddCustomer(Customer model)
         {
-            var pspList = await _context.Psps.ToListAsync();
+            var pspList = await GetActivePsps();
 
             model.Requests = pspList.Select(x => new Request
             {
@@ -282,7 +282,7 @@ namespace Service.Implementation
         {
             await _context.CustomersIbans.AddRangeAsync(ibans);
 
-            var pspList = await _context.Psps.ToListAsync();
+            var pspList = await GetActivePsps();
 
             var customerId = ibans.FirstOrDefault()?.CustomerId;
 
@@ -298,6 +298,11 @@ namespace Service.Implementation
             await _context.Requests.AddRangeAsync(requests);
 
             await _context.SaveChangesAsync();
+        }
+
+        private async Task<List<Psp>> GetActivePsps()
+        {
+            return await _context.Psps.Where(x => x.Enabled.HasValue && x.Enabled.Value).ToListAsync();
         }
 
         public async Task<PageCollection<Request>> GetRequests(RequestFilter filter)

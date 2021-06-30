@@ -23,6 +23,7 @@ namespace Service.Interface
         Task<List<Project>> GetProjects();
         Task AddProject(Project project);
         Task EditProject(Project project);
+        Task DeleteProject(int id);
         Task<List<MarketerContract>> GetMarketContract();
 
 

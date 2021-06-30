@@ -37,6 +37,8 @@ namespace Domain
     public enum GeneralException
     {
         [Description("مشتری با این کد وجود ندارد.")]
-        NotFound = 0
+        NotFound = 0,
+        [Description("Already Exist !")]
+        AlreadyExist = 1
     }
 }
