@@ -238,6 +238,11 @@ namespace Service.Implementation
 
             var customerId = ibans.FirstOrDefault()?.CustomerId;
 
+            if (ibans.Count(i => i.IsMain) > 1)
+            {
+                throw new MMSPortalException(EditIbanRequestException.InvalidMainAccount.GetEnumDescription());
+            }
+
             var requests = pspList.Select(x => new Request
             {
                 CustomerId = customerId,
@@ -248,7 +253,14 @@ namespace Service.Implementation
                 RequestStateId = (byte)RequestStateEnum.SuccessRegistration,
                 EditIbanRequests = ibans.Select(x => new EditIbanRequest
                 {
-                    Iban = x.Iban
+                    Iban = x.Iban,
+                    ShareType = x.ShareType,
+                    AccountNumber = x.AccountNumber,
+                    IsMain = x.IsMain,
+                    ShareAmountMax = x.ShareAmountMax,
+                    ShareAmountMin = x.ShareAmountMin,
+                    SharedAmount = x.SharedAmount
+
                 }).ToList()
             }).ToList();
 

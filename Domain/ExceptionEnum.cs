@@ -46,4 +46,11 @@ namespace Domain
         [Description("Already Exist !")]
         AlreadyExist = 1
     }
+
+    public enum EditIbanRequestException
+    {
+        [Description("فقط یک حساب باید اصلی باشد .")]
+        InvalidMainAccount = 0,
+        
+    }
 }
