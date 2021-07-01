@@ -101,7 +101,7 @@ namespace Service.Implementation
 
         public async Task<List<Psp>> GetPsps()
         {
-            return await _context.Psps.ToListAsync();
+            return await _context.Psps.Where(p => p.Enabled.Value).ToListAsync();
         }
 
         public async Task AddPsp(Psp psp)
@@ -168,6 +168,10 @@ namespace Service.Implementation
 
         public async Task AddProject(Project project)
         {
+            if (project.ShareAmountMax < project.ShareAmountMin)
+            {
+                throw new MMSPortalException(CreateProjectException.MaxAmountMustBeGreaterThanMin.GetEnumDescription());
+            }
             await _context.Projects.AddAsync(project);
             await _context.SaveChangesAsync();
         }

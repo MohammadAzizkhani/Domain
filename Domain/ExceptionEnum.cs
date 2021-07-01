@@ -28,6 +28,11 @@ namespace Domain
         AlreadyExist = 0
     }
 
+    public enum CreateProjectException
+    {
+        [Description("Max Amount Must be Greater than Min")]
+        MaxAmountMustBeGreaterThanMin = 0
+    }
     public enum CreateCustomerException
     {
         [Description("شخصی با این کد پسنی و صنف وجود دارد.")]

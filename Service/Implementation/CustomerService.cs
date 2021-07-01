@@ -115,9 +115,9 @@ namespace Service.Implementation
             {
                 query = query.Where(x => x.Person.NationalLegalCode == filter.RegisterNo);
             }
-            if (filter.CustomerId.HasValue)
+            if (!string.IsNullOrEmpty(filter.CustomerId))
             {
-                query = query.Where(x => x.Id == filter.CustomerId);
+                query = query.Where(x => x.CustomerKey == filter.CustomerId);
             }
             var count = await query.CountAsync();
 
