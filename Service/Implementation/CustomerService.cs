@@ -46,17 +46,19 @@ namespace Service.Implementation
                 person = _context.People.FirstOrDefault(x => x.NationalLegalCode != null && x.NationalLegalCode == model.RegisterNo);
             }
 
+            var pspList = await GetActivePsps();
+            var requests = pspList.Select(x => new Request
+            {
+                InsertDateTime = DateTime.Now,
+                RequestTypeId = (byte)RequestTypeEnum.MerchantRegister,
+                TrackingNumber = Guid.NewGuid(),
+                PspId = x.Id,
+                RequestStateId = (byte)RequestStateEnum.SuccessRegistration
+            }).ToList();
+
             if (person == null)
             {
-                var pspList = await GetActivePsps();
-                var requests = pspList.Select(x => new Request
-                {
-                    InsertDateTime = DateTime.Now,
-                    RequestTypeId = (byte)RequestTypeEnum.MerchantRegister,
-                    TrackingNumber = Guid.NewGuid(),
-                    PspId = x.Id,
-                    RequestStateId = (byte)RequestStateEnum.SuccessRegistration
-                }).ToList();
+                
                 model.Customers.First().Requests = requests;
                 await _context.People.AddAsync(model);
                 await _context.SaveChangesAsync();
@@ -73,6 +75,8 @@ namespace Service.Implementation
 
             var inputCustomer = model.Customers.First();
             inputCustomer.PersonId = person.Id;
+
+            inputCustomer.Requests = requests;
 
             await _context.Customers.AddAsync(inputCustomer);
 

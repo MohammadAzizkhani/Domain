@@ -47,6 +47,7 @@ namespace Api.MappingProfile
                         CountryAbbreviation = x.Customer.CountryAbbreviation,
                         CityCode = x.Customer.CityCode,
                         TaxPayerCode = x.Customer.TaxPayerCode,
+                        ShopAddress = x.Customer.ShopAddress,
                         CustomersIbans = x.Customer.Ibans.Select(p=>new CustomersIban
                         {
                             AccountNumber = p.AccountNumber,
