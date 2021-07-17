@@ -101,5 +101,10 @@ namespace Service.Implementation
         {
             return await _context.RequestStates.ToListAsync();
         }
+
+        public async Task<List<DocType>> GetDocumentTypes()
+        {
+            return await _context.DocTypes.ToListAsync();
+        }
     }
 }

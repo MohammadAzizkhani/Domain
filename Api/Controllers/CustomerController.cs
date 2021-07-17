@@ -229,7 +229,7 @@ namespace Api.Controllers
         {
             var document = await _customerService.DownloadFile(id);
             var data = document.Data;
-            return File(data, "application/pdf");
+            return File(data, document.ContentType);
         }
     }
 }

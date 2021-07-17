@@ -41,6 +41,8 @@ namespace Api.MappingProfile
             CreateMap<UploadFileViewModel, Document>()
                 .ForMember(x => x.InsertTime, x => x.MapFrom(x => DateTime.Now))
                 .ForMember(x => x.CustomerId, x => x.MapFrom(x => x.CustomerId))
+                .ForMember(x => x.DocTypeId, x => x.MapFrom(x => x.DocTypeId))
+                .ForMember(x => x.ContentType, x => x.MapFrom(x => x.FormFile.ContentType))
                 .ForMember(x => x.Data, v => v.MapFrom(x => GetBytes(x.FormFile)
                 ));
 

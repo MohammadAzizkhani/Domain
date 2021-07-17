@@ -188,5 +188,12 @@ namespace Api.Controllers
             var data = await _sharedDataService.GetRequestStates();
             return Ok(data);
         }
+
+        [HttpGet("document-types")]
+        public async Task<IActionResult> GetDocumentTypes()
+        {
+            var data = await _sharedDataService.GetDocumentTypes();
+            return Ok(data);
+        }
     }
 }

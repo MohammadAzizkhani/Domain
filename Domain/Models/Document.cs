@@ -9,8 +9,9 @@ namespace Domain.Models
     {
         public int Id { get; set; }
         public long? CustomerId { get; set; }
-        public int? DocTypeId { get; set; }
+        public string ContentType { get; set; }
         public byte[] Data { get; set; }
         public DateTime? InsertTime { get; set; }
+        public int? DocTypeId { get; set; }
     }
 }

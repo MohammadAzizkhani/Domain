@@ -25,5 +25,6 @@ namespace Service.Interface
         Task<List<Country>> GetCountries(string name);
         Task<List<SharedType>> GetShareTypes();
         Task<List<RequestState>> GetRequestStates();
+        Task<List<DocType>> GetDocumentTypes();
     }
 }

@@ -8,6 +8,7 @@ namespace Api.Viewmodel
 {
     public class UploadFileViewModel
     {
+        public int DocTypeId { get; set; }
         public long  CustomerId { get; set; }
         public IFormFile FormFile { get; set; }
     }
