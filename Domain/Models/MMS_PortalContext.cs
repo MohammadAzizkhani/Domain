@@ -33,6 +33,8 @@ namespace Domain.Models
         public virtual DbSet<CustomerEditInfoRequest> CustomerEditInfoRequests { get; set; }
         public virtual DbSet<CustomersIban> CustomersIbans { get; set; }
         public virtual DbSet<Degree> Degrees { get; set; }
+        public virtual DbSet<DocType> DocTypes { get; set; }
+        public virtual DbSet<Document> Documents { get; set; }
         public virtual DbSet<EditGuildRequest> EditGuildRequests { get; set; }
         public virtual DbSet<EditIbanRequest> EditIbanRequests { get; set; }
         public virtual DbSet<EditPostalCodeRequest> EditPostalCodeRequests { get; set; }
@@ -75,7 +77,7 @@ namespace Domain.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("server=.;database=MMS_portal;uid=sa;pwd=123456;");
+                optionsBuilder.UseSqlServer("server=.;database=MMS_Portal;uid=sa;pwd=123456");
             }
         }
 
@@ -456,6 +458,26 @@ namespace Domain.Models
                 entity.Property(e => e.DegreeName)
                     .HasMaxLength(300)
                     .HasDefaultValueSql("(N'-')");
+            });
+
+            modelBuilder.Entity<DocType>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID");
+
+                entity.Property(e => e.TypeName).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<Document>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
+
+                entity.Property(e => e.InsertTime)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
             });
 
             modelBuilder.Entity<EditGuildRequest>(entity =>

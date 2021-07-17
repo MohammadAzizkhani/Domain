@@ -1,8 +1,12 @@
-﻿using Api.Viewmodel;
+﻿using System;
+using System.IO;
+using System.Runtime.InteropServices;
+using Api.Viewmodel;
 using AutoMapper;
 using Domain.Enums;
 using Domain.Models;
 using Domain.Utility;
+using Microsoft.AspNetCore.Http;
 
 namespace Api.MappingProfile
 {
@@ -33,6 +37,21 @@ namespace Api.MappingProfile
             CreateMap<CustomersIban, AddIbanViewModel>().ReverseMap();
 
             CreateMap<CustomersIban, IbanDto>();
+
+            CreateMap<UploadFileViewModel, Document>()
+                .ForMember(x => x.InsertTime, x => x.MapFrom(x => DateTime.Now))
+                .ForMember(x => x.CustomerId, x => x.MapFrom(x => x.CustomerId))
+                .ForMember(x => x.Data, v => v.MapFrom(x => GetBytes(x.FormFile)
+                ));
+
+
+        }
+        private byte[] GetBytes(IFormFile file)
+        {
+            using var ms = new MemoryStream();
+            file.CopyTo(ms);
+            var fileBytes = ms.ToArray();
+            return fileBytes;
         }
     }
 }

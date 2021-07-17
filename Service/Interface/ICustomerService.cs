@@ -26,5 +26,10 @@ namespace Service.Interface
 
         Task EditRequest(EditRequestViewModel model, string username);
         Task RemoveRequest(long id);
+
+
+        Task UploadFile(Document document);
+
+        Task<Document> DownloadFile(int id);
     }
 }

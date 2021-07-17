@@ -471,6 +471,17 @@ namespace Service.Implementation
             await _context.SaveChangesAsync();
         }
 
+        public async Task UploadFile(Document document)
+        {
+            await _context.Documents.AddAsync(document);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Document> DownloadFile(int id)
+        {
+            return await _context.Documents.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         private byte GetRequestPrevioseState(byte? stateId)
         {
             switch (stateId)

@@ -21,7 +21,7 @@ namespace Api.Controllers
     [ApiController]
     [ApiVersion("1")]
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+   // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CustomerController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -211,6 +211,25 @@ namespace Api.Controllers
             await _customerService.RemoveRequest(id);
 
             return Ok();
+        }
+
+
+
+        [HttpPost("upload-file")]
+        public async Task<IActionResult> UploadFile([FromForm] UploadFileViewModel viewModel)
+        {
+            var obj = _mapper.Map<UploadFileViewModel, Document>(viewModel);
+            await _customerService.UploadFile(obj);
+            return Ok();
+        }
+
+
+        [HttpGet("download-file")]
+        public async Task<IActionResult> DownloadFile([FromQuery] int id)
+        {
+            var document = await _customerService.DownloadFile(id);
+            var data = document.Data;
+            return File(data, "application/pdf");
         }
     }
 }
