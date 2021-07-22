@@ -36,6 +36,7 @@ namespace Api.MappingProfile
                         ShopCityPreCode = x.Customer.ShopCityPreCode,
                         ShopBusinessLicenseNumber = x.Customer.ShopBusinessLicenseNumber,
                         ShopBusinessLicenseIssueDate = x.Customer.ShopBusinessLicenseIssueDate,
+                        ShopBusinessLicenseExpireDate = x.Customer.ShopBusinessLicenseExpireDate,
                         ShopEmail = x.Customer.ShopEmail,
                         RedirectUrl = x.Customer.RedirectUrl,
                         GuildId = x.Customer.GuildId,
