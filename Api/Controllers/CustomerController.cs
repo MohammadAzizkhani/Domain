@@ -7,6 +7,7 @@ using Api.Service;
 using Api.Viewmodel;
 using Api.Viewmodel.Request;
 using AutoMapper;
+using Domain;
 using Domain.Enums;
 using Domain.Filters;
 using Domain.Models;
@@ -21,7 +22,7 @@ namespace Api.Controllers
     [ApiController]
     [ApiVersion("1")]
     [Route("api/[controller]")]
-   // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CustomerController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -218,6 +219,15 @@ namespace Api.Controllers
         [HttpPost("upload-file")]
         public async Task<IActionResult> UploadFile([FromForm] UploadFileViewModel viewModel)
         {
+            if (viewModel.FormFile.Length == 0)
+            {
+                throw new MMSPortalException("please upload valid file");
+            }
+            if (viewModel.FormFile.Length > 5_245_000)
+            {
+                throw new MMSPortalException("File too large");
+            }
+
             var obj = _mapper.Map<UploadFileViewModel, Document>(viewModel);
             await _customerService.UploadFile(obj);
             return Ok();
@@ -230,6 +240,14 @@ namespace Api.Controllers
             var document = await _customerService.DownloadFile(id);
             var data = document.Data;
             return File(data, document.ContentType);
+        }
+
+        [HttpGet("customer-files")]
+        public async Task<IActionResult> GetCustomerFiles([FromQuery] int customerId)
+        {
+            var document = await _customerService.GetCustomerFiles(customerId);
+
+            return Ok(document);
         }
     }
 }

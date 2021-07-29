@@ -58,7 +58,7 @@ namespace Service.Implementation
 
             if (person == null)
             {
-                
+
                 model.Customers.First().Requests = requests;
                 await _context.People.AddAsync(model);
                 await _context.SaveChangesAsync();
@@ -480,6 +480,19 @@ namespace Service.Implementation
         public async Task<Document> DownloadFile(int id)
         {
             return await _context.Documents.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<List<FileDto>> GetCustomerFiles(int customerId)
+        {
+            return await _context.Documents
+                .Where(c => c.CustomerId == customerId)
+                .Join(_context.DocTypes, d => d.DocTypeId, t => t.Id, (d, t) => new FileDto
+                {
+                    Id = d.Id,
+                    InsertTime = d.InsertTime,
+                    TypeName = t.TypeName,
+                    ContentType = d.ContentType
+                }).ToListAsync();
         }
 
         private byte GetRequestPrevioseState(byte? stateId)

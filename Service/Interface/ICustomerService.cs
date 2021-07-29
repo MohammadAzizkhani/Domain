@@ -31,5 +31,6 @@ namespace Service.Interface
         Task UploadFile(Document document);
 
         Task<Document> DownloadFile(int id);
+        Task<List<FileDto>> GetCustomerFiles(int customerId);
     }
 }
