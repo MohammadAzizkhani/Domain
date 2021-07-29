@@ -18,6 +18,13 @@ namespace Api.MappingProfile
             CreateMap<AddPersonViewModel, Person>()
                 .ForMember(p => p.InsertDateTime,
                     x => x.MapFrom(x => DateTime.Now))
+                .ForMember(p => p.RegisterDate,
+                    x => x.MapFrom(x => ConvertToJalali(x.RegisterDate)))
+                .ForMember(p => p.BirthDate,
+                    x => x.MapFrom(x => ConvertToJalali(x.BirthDate)))
+                .ForMember(p => p.PassportExpireDate,
+                    x => x.MapFrom(x => ConvertToJalali(x.PassportExpireDate)))
+
                 .ForMember(p => p.Customers,
                     x => x.MapFrom(x => new List<Customer>
                     {
@@ -35,8 +42,8 @@ namespace Api.MappingProfile
                         ShopTelephoneNumber = x.Customer.ShopTelephoneNumber,
                         ShopCityPreCode = x.Customer.ShopCityPreCode,
                         ShopBusinessLicenseNumber = x.Customer.ShopBusinessLicenseNumber,
-                        ShopBusinessLicenseIssueDate = x.Customer.ShopBusinessLicenseIssueDate,
-                        ShopBusinessLicenseExpireDate = x.Customer.ShopBusinessLicenseExpireDate,
+                        ShopBusinessLicenseIssueDate = ConvertToJalali(x.Customer.ShopBusinessLicenseIssueDate),
+                        ShopBusinessLicenseExpireDate =  ConvertToJalali(x.Customer.ShopBusinessLicenseExpireDate),
                         ShopEmail = x.Customer.ShopEmail,
                         RedirectUrl = x.Customer.RedirectUrl,
                         GuildId = x.Customer.GuildId,
@@ -79,6 +86,12 @@ namespace Api.MappingProfile
                         }
                         }
                     }));
+        }
+
+        private string ConvertToJalali(string birthDate)
+        {
+            DateTime.TryParse(birthDate, out var res);
+            return res.ConvertToPersianDate();
         }
     }
 }
