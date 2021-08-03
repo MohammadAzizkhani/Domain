@@ -242,7 +242,7 @@ namespace Service.Implementation
 
             var customerId = ibans.FirstOrDefault()?.CustomerId;
 
-            if (ibans.Count(i => i.IsMain) > 1)
+            if (ibans.Count(i => i.IsMain != null && i.IsMain.Value) > 1)
             {
                 throw new MMSPortalException(EditIbanRequestException.InvalidMainAccount.GetEnumDescription());
             }
@@ -258,9 +258,9 @@ namespace Service.Implementation
                 EditIbanRequests = ibans.Select(x => new EditIbanRequest
                 {
                     Iban = x.Iban,
-                    ShareType = x.ShareType,
+                    ShareType = x.ShareType ?? (byte)ShareTypeEnum.Amount,
                     AccountNumber = x.AccountNumber,
-                    IsMain = x.IsMain,
+                    IsMain = x.IsMain ?? false,
                     ShareAmountMax = x.ShareAmountMax,
                     ShareAmountMin = x.ShareAmountMin,
                     SharedAmount = x.SharedAmount
