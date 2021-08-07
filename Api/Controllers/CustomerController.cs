@@ -194,6 +194,14 @@ namespace Api.Controllers
             return Ok();
         }
 
+        [HttpPost("cancel-edit")]
+        public async Task<IActionResult> CancelEditRequest([FromBody] SimpleModel model)
+        {
+            await _customerService.StartEditRequest(model.Id, null);
+
+            return Ok();
+        }
+
         [HttpPut("edit-request")]
         public async Task<IActionResult> EditRequest([FromBody] EditRequestViewModel vm)
         {

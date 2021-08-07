@@ -18,6 +18,7 @@ namespace Domain.Filters
         public long? PspId { get; set; }
         public string ShopName { get; set; }
         public List<byte> RequestStates { get; set; }
+        public string CustomerKey { get; set; }
 
         public string SortBy { get; set; }
         public bool IsSortAscending { get; set; }

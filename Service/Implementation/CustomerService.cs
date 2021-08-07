@@ -101,15 +101,15 @@ namespace Service.Implementation
             }
             if (!string.IsNullOrEmpty(filter.ShopName))
             {
-                query = query.Where(x => x.ShopNameEn == filter.ShopName || x.ShopNameFa == filter.ShopName);
+                query = query.Where(x => x.ShopNameFa.Contains(filter.ShopName));
             }
             if (!string.IsNullOrEmpty(filter.Name))
             {
-                query = query.Where(x => x.Person.FirstNameFa == filter.Name || x.Person.FirstNameFa == filter.Name);
+                query = query.Where(x => x.Person.FirstNameFa.Contains(filter.Name) || x.Person.FirstNameFa.Contains(filter.Name));
             }
             if (!string.IsNullOrEmpty(filter.LastName))
             {
-                query = query.Where(x => x.Person.LastNameFa == filter.LastName || x.Person.LastNameEn == filter.LastName);
+                query = query.Where(x => x.Person.LastNameFa.Contains(filter.LastName) || x.Person.LastNameEn.Contains(filter.LastName));
             }
             if (!string.IsNullOrEmpty(filter.ForeignPervasiveCode))
             {
@@ -339,11 +339,7 @@ namespace Service.Implementation
             }
             if (!string.IsNullOrEmpty(filter.ShopName))
             {
-                query = query.Where(x => x.Customer.ShopNameFa.StartsWith(filter.ShopName));
-            }
-            if (!string.IsNullOrEmpty(filter.ShopName))
-            {
-                query = query.Where(x => x.Customer.ShopNameFa.StartsWith(filter.ShopName));
+                query = query.Where(x => x.Customer.ShopNameFa.Contains(filter.ShopName));
             }
             if (filter.RequestStates.Any())
             {
@@ -356,6 +352,10 @@ namespace Service.Implementation
             if (filter.RequestType.HasValue)
             {
                 query = query.Where(x => x.RequestTypeId == (byte)filter.RequestType.Value);
+            }
+            if (!string.IsNullOrEmpty(filter.CustomerKey))
+            {
+                query = query.Where(x => x.Customer.CustomerKey == filter.CustomerKey);
             }
 
             var count = await query.CountAsync();
