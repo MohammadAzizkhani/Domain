@@ -31,7 +31,8 @@ namespace Api.MappingProfile
                 .ForMember(x => x.Guild, x => x.MapFrom(x => $"{x.Guild.CategoryName} - {x.Guild.CategoryCode}"));
 
             CreateMap<Merchant, MerchantViewModel>()
-                .ForMember(x => x.StatusTitle, x => x.MapFrom(x => x.Status == (int)MerchantStateEnum.Enable ? MerchantStateEnum.Enable.GetEnumDescription() : MerchantStateEnum.Disable.GetEnumDescription()));
+                .ForMember(x => x.StatusTitle, x => x.MapFrom(x => x.Status == (int)MerchantStateEnum.Enable ? MerchantStateEnum.Enable.GetEnumDescription() : MerchantStateEnum.Disable.GetEnumDescription()))
+                .ForMember(x => x.PspTitle, x => x.MapFrom(x => x.Psp.Name));
 
 
             CreateMap<CustomersIban, AddIbanViewModel>().ReverseMap();

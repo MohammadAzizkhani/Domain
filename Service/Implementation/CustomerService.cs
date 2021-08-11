@@ -86,7 +86,9 @@ namespace Service.Implementation
 
         public async Task<PageCollection<Customer>> GetCustomers(CustomerFilter filter)
         {
-            var query = _context.Customers.Include(x => x.Guild).Include(x => x.Merchants).Include(p => p.Person).AsQueryable();
+            var query = _context.Customers.Include(x => x.Guild).Include(x => x.Merchants)
+                .ThenInclude(x=>x.Psp)
+                .Include(p => p.Person).AsQueryable();
 
             //var columnsMap = new Dictionary<string, Expression<Func<Customer, object>>>
             //{

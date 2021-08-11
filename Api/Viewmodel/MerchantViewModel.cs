@@ -13,5 +13,6 @@ namespace Api.Viewmodel
         public byte? Status { get; set; }
         public string StatusTitle { get; set; }
         public int? TerminalType { get; set; }
+        public string PspTitle { get; set; }
     }
 }
